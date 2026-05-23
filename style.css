@@ -1,0 +1,41 @@
+/* =========================================
+   VARIABLES Y CONFIGURACIÓN BASE
+   ========================================= */
+:root {
+    --color-institucional-azul: #0b1838;
+    --color-institucional-naranja: #F68121;
+    --color-fondo: #f4f6f9;
+    --color-texto: #333333;
+    --color-blanco: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* =========================================
+   CABECERA (HEADER)
+   ========================================= */
+header {
+    background-color: var(--color-institucional-azul);
+    color: var(--color-blanco);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 1.5rem;
+}
