@@ -39,6 +39,10 @@ header {
 header h1 {
     font-size: 1.5rem;
 }
+
+
+
+
 /* =========================================
    ESTRUCTURA PRINCIPAL (LAYOUT)
    ========================================= */
@@ -169,133 +173,71 @@ h2 {
 .btn-submit:hover {
     background-color: #d16b18;
 }
-/* =========================================
-   ESTRUCTURA PRINCIPAL (LAYOUT)
-   ========================================= */
-.layout-container {
-    display: flex;
-    flex: 1; /* Ocupa el espacio restante de la pantalla */
-}
+
+
+
+
+
 
 /* =========================================
-   NAVEGACIÓN LATERAL (NAV)
+   PANEL SECUNDARIO (ASIDE)
    ========================================= */
-nav {
-    background-color: #1a2952; /* Un tono un poco más claro que el azul principal */
-    width: 250px;
-    padding: 20px 0;
+aside {
+    width: 300px;
+    background-color: var(--color-blanco);
+    padding: 30px 20px;
+    border-left: 1px solid #ddd;
 }
 
-nav ul {
-    list-style: none;
-}
-
-nav ul li a {
-    display: block;
-    color: #cbd5e1;
-    text-decoration: none;
-    padding: 15px 25px;
-    transition: 0.3s;
-}
-
-nav ul li a:hover, nav ul li a.active {
-    background-color: var(--color-institucional-naranja);
-    color: var(--color-blanco);
-    font-weight: bold;
-}
-
-/* =========================================
-   CONTENIDO PRINCIPAL (MAIN)
-   ========================================= */
-main {
-    flex: 1; /* Toma todo el espacio central disponible */
-    padding: 30px;
-}
-
-h2 {
+aside h3 {
     color: var(--color-institucional-azul);
     margin-bottom: 20px;
 }
 
-.divider {
-    border: none;
-    height: 1px;
-    background-color: #ddd;
-    margin: 30px 0;
-}
-
-/* --- TARJETAS DEL DASHBOARD --- */
-.cards-container {
-    display: flex;
-    gap: 20px;
-}
-
-.card {
-    background-color: var(--color-blanco);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    flex: 1;
-    text-align: center;
-    border-top: 4px solid var(--color-institucional-azul);
-}
-
-.card h3 {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 10px;
-}
-
-.card .metric {
-    font-size: 2rem;
-    font-weight: bold;
-    color: var(--color-institucional-naranja);
-}
-
-.card .text-alert {
-    color: #e74c3c;
-}
-
-/* --- FORMULARIO --- */
-.inventory-form {
-    background-color: var(--color-blanco);
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    max-width: 500px;
-}
-
-.form-group {
+.alert {
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 15px;
     margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.form-group input, .form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
+    font-size: 0.9rem;
     border-radius: 4px;
-    font-size: 1rem;
 }
 
-.btn-submit {
-    background-color: var(--color-institucional-naranja);
+/* =========================================
+   PIE DE PÁGINA (FOOTER)
+   ========================================= */
+footer {
+    background-color: var(--color-institucional-azul);
     color: var(--color-blanco);
-    border: none;
-    padding: 12px 20px;
-    font-size: 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    width: 100%;
-    transition: 0.3s;
+    text-align: center;
+    padding: 15px;
+    font-size: 0.9rem;
 }
 
-.btn-submit:hover {
-    background-color: #d16b18;
+/* =========================================
+   DISEÑO RESPONSIVE (MEDIA QUERIES)
+   ========================================= */
+/* Si la pantalla es más pequeña que una Tablet (ej. Celulares) */
+@media (max-width: 900px) {
+    .layout-container {
+        flex-direction: column; /* Pone las cosas una debajo de otra */
+    }
+    
+    nav, aside {
+        width: 100%;
+    }
+
+    nav ul {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    nav ul li {
+        flex: 1;
+        text-align: center;
+    }
+
+    .cards-container {
+        flex-direction: column; /* Apila las tarjetas verticalmente */
+    }
 }
