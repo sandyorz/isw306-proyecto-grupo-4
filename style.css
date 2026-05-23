@@ -1,138 +1,148 @@
-/* =========================================
-   VARIABLES Y CONFIGURACIÓN BASE
-   ========================================= */
+/* ==========================================================================
+   Variables Globales y Configuración del Tema Dinámico
+   ========================================================================== */
 :root {
-    --color-institucional-azul: #0b1838;
-    --color-institucional-naranja: #F68121;
-    --color-fondo: #f4f6f9;
-    --color-texto: #333333;
-    --color-blanco: #ffffff;
+    --brand-primary: #0b1838;       /* Azul Institucional */
+    --brand-accent: #F68121;        /* Naranja Institucional */
+    --bg-base: #f4f6f9;             /* Fondo General de la Interfaz */
+    --text-main: #333333;           /* Color de Texto Principal (Alta Legibilidad) */
+    --text-light: #ffffff;          /* Variantes de Texto Claro */
+    --color-danger: #e74c3c;         /* Indicadores de Estado de Error */
+    --color-success: #2ecc71;        /* Indicadores de Estado Exitoso */
+    --border-color: #e2e8f0;         /* Bordes Estructurales sutiles */
 }
 
+/* ==========================================================================
+   Reseteo CSS (Reset) y Estilos Base del Documento
+   ========================================================================== */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Garantiza el cálculo correcto de anchos con padding */
 }
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--color-fondo);
-    color: var(--color-texto);
+    background-color: var(--bg-base);
+    color: var(--text-main);
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 100vh; /* Fuerza al contenedor a ocupar el alto total de la ventana */
 }
 
-/* =========================================
-   CABECERA (HEADER)
-   ========================================= */
-header {
-    background-color: var(--color-institucional-azul);
-    color: var(--color-blanco);
+/* ==========================================================================
+   Arquitectura del Layout Principal (Flexbox Model)
+   ========================================================================== */
+.layout-wrapper {
+    display: flex;
+    flex: 1; /* Ocupa de forma dinámica todo el espacio vertical disponible */
+}
+
+/* ==========================================================================
+   Componente: Cabecera (Header)
+   ========================================================================== */
+.app-header {
+    background-color: var(--brand-primary);
+    color: var(--text-light);
     padding: 15px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 10;
 }
 
-header h1 {
+.app-header h1 {
     font-size: 1.5rem;
 }
 
-
-
-
-/* =========================================
-   ESTRUCTURA PRINCIPAL (LAYOUT)
-   ========================================= */
-.layout-container {
-    display: flex;
-    flex: 1; /* Ocupa el espacio restante de la pantalla */
-}
-
-/* =========================================
-   NAVEGACIÓN LATERAL (NAV)
-   ========================================= */
-nav {
-    background-color: #1a2952; /* Un tono un poco más claro que el azul principal */
+/* ==========================================================================
+   Componente: Navegación Lateral (Sidebar Navigation)
+   ========================================================================== */
+.sidebar-nav {
+    background-color: #1a2952; /* Variante tonal para diferenciar el menú lateral */
     width: 250px;
     padding: 20px 0;
 }
 
-nav ul {
+.sidebar-nav ul {
     list-style: none;
 }
 
-nav ul li a {
+.sidebar-nav ul li a {
     display: block;
     color: #cbd5e1;
     text-decoration: none;
     padding: 15px 25px;
-    transition: 0.3s;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-nav ul li a:hover, nav ul li a.active {
-    background-color: var(--color-institucional-naranja);
-    color: var(--color-blanco);
-    font-weight: bold;
+.sidebar-nav ul li a:hover, 
+.sidebar-nav ul li a.active {
+    background-color: var(--brand-accent);
+    color: var(--text-light);
+    font-weight: 600;
 }
 
-/* =========================================
-   CONTENIDO PRINCIPAL (MAIN)
-   ========================================= */
-main {
-    flex: 1; /* Toma todo el espacio central disponible */
+/* ==========================================================================
+   Sección: Área de Contenido Central (Main Content)
+   ========================================================================== */
+.main-content {
+    flex: 1;
     padding: 30px;
 }
 
-h2 {
-    color: var(--color-institucional-azul);
+.main-content h2 {
+    color: var(--brand-primary);
     margin-bottom: 20px;
 }
 
-.divider {
+.section-divider {
     border: none;
     height: 1px;
-    background-color: #ddd;
+    background-color: var(--border-color);
     margin: 30px 0;
 }
 
-/* --- TARJETAS DEL DASHBOARD --- */
-.cards-container {
+/* ==========================================================================
+   Componente: Tarjetas de Métricas (KPI Grid)
+   ========================================================================== */
+.grid-cards {
     display: flex;
     gap: 20px;
 }
 
-.card {
-    background-color: var(--color-blanco);
+.metric-card {
+    background-color: var(--text-light);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     flex: 1;
     text-align: center;
-    border-top: 4px solid var(--color-institucional-azul);
+    border-top: 4px solid var(--brand-primary);
 }
 
-.card h3 {
+.metric-card h3 {
     font-size: 1rem;
     color: #666;
     margin-bottom: 10px;
 }
 
-.card .metric {
+.metric-value {
     font-size: 2rem;
     font-weight: bold;
-    color: var(--color-institucional-naranja);
+    color: var(--brand-accent);
 }
 
-.card .text-alert {
-    color: #e74c3c;
+.alert-text {
+    color: var(--color-danger);
 }
 
-/* --- FORMULARIO --- */
-.inventory-form {
-    background-color: var(--color-blanco);
+/* ==========================================================================
+   Componente: Formularios Estándar (Form Elements)
+   ========================================================================== */
+.standard-form {
+    background-color: var(--text-light);
     padding: 25px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
@@ -146,10 +156,11 @@ h2 {
 .form-group label {
     display: block;
     margin-bottom: 5px;
-    font-weight: bold;
+    font-weight: 600;
 }
 
-.form-group input, .form-group select {
+.form-group input, 
+.form-group select {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -157,9 +168,9 @@ h2 {
     font-size: 1rem;
 }
 
-.btn-submit {
-    background-color: var(--color-institucional-naranja);
-    color: var(--color-blanco);
+.btn-primary {
+    background-color: var(--brand-accent);
+    color: var(--text-light);
     border: none;
     padding: 12px 20px;
     font-size: 1rem;
@@ -167,34 +178,29 @@ h2 {
     cursor: pointer;
     font-weight: bold;
     width: 100%;
-    transition: 0.3s;
+    transition: background-color 0.2s ease;
 }
 
-.btn-submit:hover {
+.btn-primary:hover {
     background-color: #d16b18;
 }
 
-
-
-
-
-
-/* =========================================
-   PANEL SECUNDARIO (ASIDE)
-   ========================================= */
-aside {
+/* ==========================================================================
+   Componente: Panel de Estado Secundario (Aside Log Panel)
+   ========================================================================== */
+.system-status-panel {
     width: 300px;
-    background-color: var(--color-blanco);
+    background-color: var(--text-light);
     padding: 30px 20px;
-    border-left: 1px solid #ddd;
+    border-left: 1px solid var(--border-color);
 }
 
-aside h3 {
-    color: var(--color-institucional-azul);
+.system-status-panel h3 {
+    color: var(--brand-primary);
     margin-bottom: 20px;
 }
 
-.alert {
+.status-alert {
     background-color: #fff3cd;
     border-left: 4px solid #ffc107;
     padding: 15px;
@@ -203,41 +209,92 @@ aside h3 {
     border-radius: 4px;
 }
 
-/* =========================================
-   PIE DE PÁGINA (FOOTER)
-   ========================================= */
-footer {
-    background-color: var(--color-institucional-azul);
-    color: var(--color-blanco);
-    text-align: center;
-    padding: 15px;
-    font-size: 0.9rem;
+.status-alert.success {
+    background-color: #e8f8f5;
+    border-left-color: var(--color-success);
 }
 
-/* =========================================
-   DISEÑO RESPONSIVE (MEDIA QUERIES)
-   ========================================= */
-/* Si la pantalla es más pequeña que una Tablet (ej. Celulares) */
+/* ==========================================================================
+   Componente: Pie de Página Avanzado (Autores y Créditos)
+   ========================================================================== */
+.app-footer {
+    background-color: var(--brand-primary);
+    color: var(--text-light);
+    padding: 30px 20px 15px 20px;
+    margin-top: auto; /* Empuja el footer si el contenido central es corto */
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.footer-group-info h4 {
+    color: var(--brand-accent);
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.team-members {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.team-members li {
+    background-color: rgba(255, 255, 255, 0.08);
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: background-color 0.3s ease;
+}
+
+.team-members li:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+}
+
+.footer-copyright {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+    width: 100%;
+    font-size: 0.85rem;
+    color: #cbd5e1;
+}
+
+/* ==========================================================================
+   Estrategia de Adaptabilidad Visual (Responsive Fluid Layout)
+   ========================================================================== */
 @media (max-width: 900px) {
-    .layout-container {
-        flex-direction: column; /* Pone las cosas una debajo de otra */
+    .layout-wrapper {
+        flex-direction: column;
     }
     
-    nav, aside {
+    .sidebar-nav, 
+    .system-status-panel {
         width: 100%;
     }
 
-    nav ul {
+    .sidebar-nav ul {
         display: flex;
         flex-wrap: wrap;
     }
 
-    nav ul li {
+    .sidebar-nav ul li {
         flex: 1;
         text-align: center;
     }
 
-    .cards-container {
-        flex-direction: column; /* Apila las tarjetas verticalmente */
+    .grid-cards {
+        flex-direction: column;
     }
 }

@@ -1,94 +1,116 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración - Grupo 4</title>
+    <title>DevOps & QA Dashboard | Grupo 4</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-        <div class="logo-container">
-            <h1>Panel de Administración</h1>
+
+    <header class="app-header">
+        <div class="brand-container">
+            <h1>Sistema de Gestión - Desarrollo de Aplicaciones WEB</h1>
         </div>
         <div class="user-profile">
-            <span>Admin - Grupo 4</span>
+            <span>Ingeniería de Software | Grupo 4</span>
         </div>
     </header>
 
-    <div class="layout-container">
+    <div class="layout-wrapper">
         
-        <nav>
+        <nav class="sidebar-nav">
             <ul>
-                <li><a href="#" class="active">Inicio (Dashboard)</a></li>
-                <li><a href="#">Catálogo</a></li>
-                <li><a href="#">Envíos Internacionales</a></li>
-                <li><a href="#">Configuración</a></li>
+                <li><a href="#" class="active">Dashboard de Métricas</a></li>
+                <li><a href="#">Backlog de Tareas</a></li>
+                <li><a href="#">Control de Calidad (QA)</a></li>
+                <li><a href="#">Entornos de Despliegue</a></li>
             </ul>
         </nav>
 
-        <main>
-            <section class="dashboard">
-                <h2>Resumen de Inventario</h2>
-                <div class="cards-container">
-                    <article class="card">
-                        <h3>Ventas Totales</h3>
-                        <p class="metric">$12,450</p>
+        <main class="main-content">
+            
+            <section class="kpi-dashboard">
+                <h2>Estado del Sprint Actual</h2>
+                <div class="grid-cards">
+                    <article class="metric-card">
+                        <h3>Tareas Completadas</h3>
+                        <p class="metric-value">24 / 30</p>
                     </article>
-                    <article class="card">
-                        <h3>Envíos a EE.UU.</h3>
-                        <p class="metric">34</p>
+                    <article class="metric-card">
+                        <h3>Cobertura de Pruebas</h3>
+                        <p class="metric-value">85%</p>
                     </article>
-                    <article class="card">
-                        <h3>Lotes Agotados</h3>
-                        <p class="metric text-alert">2</p>
+                    <article class="metric-card">
+                        <h3>Bugs Críticos (Producción)</h3>
+                        <p class="metric-value alert-text">1</p>
                     </article>
                 </div>
             </section>
 
-            <hr class="divider">
+            <hr class="section-divider">
 
             <section class="form-section">
-                <h2>Registrar Nuevo Lote de Extensiones</h2>
-                <form action="#" method="POST" class="inventory-form">
+                <h2>Registro de Nueva Incidencia (Bug Tracking)</h2>
+                <form action="#" method="POST" class="standard-form">
+                    
                     <div class="form-group">
-                        <label for="textura">Textura del Cabello</label>
-                        <select id="textura" name="textura">
-                            <option value="lacio">Lacio</option>
-                            <option value="ondulado">Ondulado</option>
-                            <option value="rizado">Rizado</option>
+                        <label for="severity">Nivel de Severidad</label>
+                        <select id="severity" name="severity">
+                            <option value="low">Baja - UI/UX Menor</option>
+                            <option value="medium">Media - Funcionalidad Parcial</option>
+                            <option value="high">Alta - Falla Crítica (Blocker)</option>
                         </select>
                     </div>
                     
                     <div class="form-group">
-                        <label for="largo">Largo (pulgadas)</label>
-                        <input type="number" id="largo" name="largo" placeholder="Ej. 24" required>
+                        <label for="module">Módulo Afectado</label>
+                        <input type="text" id="module" name="module" placeholder="Ej. Autenticación, Base de Datos..." required>
                     </div>
 
                     <div class="form-group">
-                        <label for="color">Color</label>
-                        <input type="text" id="color" name="color" placeholder="Ej. Rubio Cenizo" required>
+                        <label for="description">Descripción Técnica del Error</label>
+                        <input type="text" id="description" name="description" placeholder="Pasos para reproducir la incidencia..." required>
                     </div>
 
-                    <button type="submit" class="btn-submit">Guardar en Inventario</button>
+                    <button type="submit" class="btn-primary">Registrar Incidencia</button>
                 </form>
             </section>
         </main>
 
-        <aside>
-            <h3>Notificaciones</h3>
-            <div class="alert">
-                <strong>Alerta de Stock:</strong> Quedan pocas unidades de extensiones 24" (Negro).
+        <aside class="system-status-panel">
+            <h3>Log del Sistema</h3>
+            <div class="status-alert">
+                <strong>[13:05] Build Fallido:</strong> Error de compilación en el servidor de integración continua (CI).
             </div>
-            <div class="alert">
-                <strong>Nuevo Pedido:</strong> Envío internacional pendiente hacia Miami.
+            <div class="status-alert success">
+                <strong>[11:30] Deploy Exitoso:</strong> Rama 'etapa-1/maquetacion' unida a 'main'.
             </div>
         </aside>
 
     </div>
 
-    <footer>
-        <p>&copy; 2026 - Desarrollo de Aplicaciones WEB | Proyecto Integrador Grupo 4</p>
+    <footer class="app-footer">
+        <div class="footer-content">
+            
+            <div class="footer-group-info">
+                <h4>Grupo 4 - Desarrollo de Aplicaciones WEB</h4>
+                <ul class="team-members">
+                    <li>Camille Páez - 100074544</li>
+                    <li>Albert Peña - 100037998</li>
+                    <li>Sandy Ortíz - 100049907</li>
+                    <li>Alexander Tejeda - 100074246</li>
+                    <li>Alex Santana - 100074369</li>
+                    <li>Yocairis Pérez - 100054667</li>
+                </ul>
+            </div>
+
+            <div class="footer-copyright">
+                <p>&copy; 2026 - Proyecto Integrador</p>
+            </div>
+            
+        </div>
     </footer>
+
 </body>
 </html>
