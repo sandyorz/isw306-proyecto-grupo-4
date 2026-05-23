@@ -6,6 +6,88 @@
     <title>Panel de Administración - Grupo 4</title>
 </head>
 <body>
-    
+<header>
+        <div class="logo-container">
+            <h1>Panel de Administración</h1>
+        </div>
+        <div class="user-profile">
+            <span>Admin - Grupo 4</span>
+        </div>
+    </header>
+
+    <div class="layout-container">
+        
+        <nav>
+            <ul>
+                <li><a href="#" class="active">Inicio (Dashboard)</a></li>
+                <li><a href="#">Catálogo</a></li>
+                <li><a href="#">Envíos Internacionales</a></li>
+                <li><a href="#">Configuración</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <section class="dashboard">
+                <h2>Resumen de Inventario</h2>
+                <div class="cards-container">
+                    <article class="card">
+                        <h3>Ventas Totales</h3>
+                        <p class="metric">$12,450</p>
+                    </article>
+                    <article class="card">
+                        <h3>Envíos a EE.UU.</h3>
+                        <p class="metric">34</p>
+                    </article>
+                    <article class="card">
+                        <h3>Lotes Agotados</h3>
+                        <p class="metric text-alert">2</p>
+                    </article>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <section class="form-section">
+                <h2>Registrar Nuevo Lote de Extensiones</h2>
+                <form action="#" method="POST" class="inventory-form">
+                    <div class="form-group">
+                        <label for="textura">Textura del Cabello</label>
+                        <select id="textura" name="textura">
+                            <option value="lacio">Lacio</option>
+                            <option value="ondulado">Ondulado</option>
+                            <option value="rizado">Rizado</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="largo">Largo (pulgadas)</label>
+                        <input type="number" id="largo" name="largo" placeholder="Ej. 24" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="color">Color</label>
+                        <input type="text" id="color" name="color" placeholder="Ej. Rubio Cenizo" required>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Guardar en Inventario</button>
+                </form>
+            </section>
+        </main>
+
+        <aside>
+            <h3>Notificaciones</h3>
+            <div class="alert">
+                <strong>Alerta de Stock:</strong> Quedan pocas unidades de extensiones 24" (Negro).
+            </div>
+            <div class="alert">
+                <strong>Nuevo Pedido:</strong> Envío internacional pendiente hacia Miami.
+            </div>
+        </aside>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 - Desarrollo de Aplicaciones WEB | Proyecto Integrador Grupo 4</p>
+    </footer>
 </body>
 </html>
