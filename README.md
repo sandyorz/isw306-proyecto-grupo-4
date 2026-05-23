@@ -1,6 +1,6 @@
 # 💻 Sistema de Gestión - Desarrollo de Aplicaciones WEB
 
-> **Proyecto Integrador**
+> **Proyecto Materia**
 > Este repositorio contiene el código fuente de nuestra aplicación web funcional, desarrollada de manera incremental cumpliendo con los estándares de diseño UI/UX y control de versiones.
 
 ## 👥 Equipo de Desarrollo: Grupo 4
@@ -27,4 +27,4 @@ En esta primera fase, hemos desarrollado la base visual del **Dashboard de DevOp
 * **Control de Versiones:** Gestión colaborativa estricta mediante Git, utilizando la rama `etapa-1/maquetacion` para nuestra primera entrega.
 
 ---
-*© 2026 - Desarrollo de Aplicaciones WEB | Proyecto Integrador*
+*© 2026 - Desarrollo de Aplicaciones WEB | Proyecto Materia*
