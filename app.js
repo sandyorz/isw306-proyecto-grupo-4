@@ -13,6 +13,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+    // --- Parte 3: Participación de Alexander Tejeda (100074246) ---
+    // Resumen: Yo programé las funciones para inyectar o limpiar las clases CSS de error 
+    // y los eventos "input" para que la validación ocurra en tiempo real al escribir.
+    
+    const showError = (input, span, message) => {
+        input.classList.add('input-error'); 
+        span.innerHTML = message;          
+    };
+
+    const clearError = (input, span) => {
+        input.classList.remove('input-error'); 
+        span.innerHTML = '';                  
+    };
+
+    emailInput.addEventListener('input', validateEmail);
+    severityInput.addEventListener('change', validateSeverity);
+    moduleInput.addEventListener('input', validateModule);
+    descInput.addEventListener('input', validateDescription);
+
 
      // --- Parte 4: Participación de Alex Santana (100074369) ---
     // Resumen: Me encargué de detener el submit por defecto, guardar los datos en 
