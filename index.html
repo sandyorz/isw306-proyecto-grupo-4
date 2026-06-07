@@ -52,28 +52,41 @@
 
             <section class="form-section">
                 <h2>Registro de Nueva Incidencia (Bug Tracking)</h2>
-                <form action="#" method="POST" class="standard-form">
+                
+                <div id="form-alert" class="hidden"></div>
+
+                <form id="bug-tracker-form" action="#" method="POST" class="standard-form">
                     
+                    <div class="form-group">
+                        <label for="reporter-email">Correo del Reportador</label>
+                        <input type="email" id="reporter-email" name="reporter-email" placeholder="ejemplo@grupo4.com">
+                        <span class="error-text" id="email-error"></span>
+                    </div>
+
                     <div class="form-group">
                         <label for="severity">Nivel de Severidad</label>
                         <select id="severity" name="severity">
+                            <option value="">Seleccione una opción...</option>
                             <option value="low">Baja - UI/UX Menor</option>
                             <option value="medium">Media - Funcionalidad Parcial</option>
                             <option value="high">Alta - Falla Crítica (Blocker)</option>
                         </select>
+                        <span class="error-text" id="severity-error"></span>
                     </div>
                     
                     <div class="form-group">
                         <label for="module">Módulo Afectado</label>
-                        <input type="text" id="module" name="module" placeholder="Ej. Autenticación, Base de Datos..." required>
+                        <input type="text" id="module" name="module" placeholder="Ej. Autenticación, Base de Datos...">
+                        <span class="error-text" id="module-error"></span>
                     </div>
 
                     <div class="form-group">
                         <label for="description">Descripción Técnica del Error</label>
-                        <input type="text" id="description" name="description" placeholder="Pasos para reproducir la incidencia..." required>
+                        <textarea id="description" name="description" rows="3" placeholder="Pasos para reproducir la incidencia..."></textarea>
+                        <span class="error-text" id="description-error"></span>
                     </div>
 
-                    <button type="submit" class="btn-primary">Registrar Incidencia</button>
+                    <button type="submit" id="submit-btn" class="btn-primary">Registrar Incidencia</button>
                 </form>
             </section>
         </main>
@@ -106,11 +119,12 @@
             </div>
 
             <div class="footer-copyright">
-                <p>&copy; 2026 - Proyecto Materia</p>
+                <p>&copy; 2026 - Proyecto Integrador</p>
             </div>
             
         </div>
     </footer>
 
+    <script src="app.js"></script>
 </body>
 </html>
