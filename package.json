@@ -1,0 +1,26 @@
+{
+  "name": "isw306-proyecto-grupo-4",
+  "version": "1.0.0",
+  "description": "> **Proyecto Materia**\r > Este repositorio contiene el código fuente de nuestra aplicación web funcional, desarrollada de manera incremental cumpliendo con los estándares de diseño UI/UX y control de versiones.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sandyorz/isw306-proyecto-grupo-4.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sandyorz/isw306-proyecto-grupo-4/issues"
+  },
+  "homepage": "https://github.com/sandyorz/isw306-proyecto-grupo-4#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "sqlite3": "^6.0.1"
+  }
+}
