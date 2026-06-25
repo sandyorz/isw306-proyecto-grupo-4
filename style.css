@@ -1,3 +1,8 @@
+/* --- Participación de Yocairis Pérez (100054667) --- */
+/* Resumen (v2): Diseño de la parte visual del Dashboard. Configuración de 
+   variables de colores, layout responsive con Flexbox y preparación de 
+   clases de utilidad (.error-text, .input-error) para validaciones JS. */
+
 /* ==========================================================================
    Variables Globales y Configuración del Tema Dinámico
    ========================================================================== */
@@ -7,9 +12,9 @@
     --bg-base: #f4f6f9;             /* Fondo General de la Interfaz */
     --text-main: #333333;           /* Color de Texto Principal (Alta Legibilidad) */
     --text-light: #ffffff;          /* Variantes de Texto Claro */
-    --color-danger: #e74c3c;         /* Indicadores de Estado de Error */
-    --color-success: #2ecc71;        /* Indicadores de Estado Exitoso */
-    --border-color: #e2e8f0;         /* Bordes Estructurales sutiles */
+    --color-danger: #e74c3c;        /* Indicadores de Estado de Error */
+    --color-success: #2ecc71;       /* Indicadores de Estado Exitoso */
+    --border-color: #e2e8f0;        /* Bordes Estructurales sutiles */
 }
 
 /* ==========================================================================
@@ -159,13 +164,21 @@ body {
     font-weight: 600;
 }
 
+/* Cambio en v2: Se integró el selector 'textarea' y se forzó la herencia de la fuente base */
 .form-group input, 
-.form-group select {
+.form-group select,
+.form-group textarea {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1rem;
+    font-family: inherit; /* Agregado en v2: Uniformidad tipográfica en campos de texto */
+}
+
+/* Cambio en v2: Nueva regla específica para textareas (solo redimensionables verticalmente) */
+.form-group textarea {
+    resize: vertical;
 }
 
 .btn-primary {
@@ -269,6 +282,29 @@ body {
     width: 100%;
     font-size: 0.85rem;
     color: #cbd5e1;
+}
+
+/* ==========================================================================
+   Componente: Clases de Utilidad JS (Agregado en la Versión 2)
+   ========================================================================== */
+/* Cambio en v2: Estilos para la visualización de mensajes de error en validaciones JS */
+.error-text {
+    color: var(--color-danger);
+    font-size: 0.85rem;
+    display: block;
+    margin-top: 5px;
+    height: 15px;
+}
+
+/* Cambio en v2: Modificador de borde y fondo para inputs que no pasan la validación */
+.input-error {
+    border: 2px solid var(--color-danger) !important;
+    background-color: #fdf2f2;
+}
+
+/* Cambio en v2: Clase de utilidad general para ocultar elementos dinámicamente */
+.hidden {
+    display: none !important;
 }
 
 /* ==========================================================================
