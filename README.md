@@ -1,7 +1,6 @@
 # 💻 Sistema de Gestión - Desarrollo de Aplicaciones WEB
 
-> **Proyecto Materia**
-> Este repositorio contiene el código fuente de nuestra aplicación web funcional, desarrollada de manera incremental cumpliendo con los estándares de diseño UI/UX y control de versiones.
+> **Proyecto Materia** > Este repositorio contiene el código fuente de nuestra aplicación web funcional, desarrollada de manera incremental cumpliendo con los estándares de diseño UI/UX, arquitectura cliente-servidor y control de versiones.
 
 ## 👥 Equipo de Desarrollo: Grupo 4
 
@@ -39,11 +38,54 @@ En esta segunda fase, dotamos a la aplicación de lógica y dinamismo, implement
 
 ---
 
-## 🛠️ Instrucciones de Instalación (Etapa 3)
+## ⚙️ Sobre el Proyecto (Etapa 3: Backend y Persistencia Relacional)
 
-1. Instala dependencias: `npm install`
-2. Inicia el servidor: `node server.js`
-3. Abre `index.html` con Live Server para conectar Frontend y Backend.
+En esta tercera fase, escalamos la aplicación hacia una arquitectura **Full-Stack (Cliente-Servidor)**, eliminando la dependencia del almacenamiento local del navegador y migrando el sistema a un entorno controlado:
+
+* **Entorno de Servidor (Backend):** Construcción de una API REST utilizando **Node.js** y el framework **Express**, encargada de procesar las peticiones HTTP seguras y deserializar payloads JSON.
+* **Persistencia de Datos Real (SQL):** Integración de un motor de bases de datos relacionales embebido mediante **SQLite**, automatizando el esquema estructural a través de scripts de inicialización de datos.
+* **Consumo Asíncrono de API (Fetch Model):** Refactorización del flujo del Frontend utilizando la API nativa de JavaScript (`async/await`), logrando el desacoplamiento total del almacenamiento mediante llamadas transaccionales `GET` y `POST`.
+* **Optimización Basada en Feedback:** Implementación de expresiones regulares de validación más robustas para dominios internacionales de nivel superior (TLD) y renderizado reactivo dinámico del historial de logs en el DOM lateral.
 
 ---
-*© 2026 - Desarrollo de Aplicaciones WEB | Proyecto Materia*
+
+## 🛠️ Instrucciones de Instalación y Despliegue Local
+
+Para clonar, configurar y ejecutar el ecosistema completo en tu entorno local, ejecuta la siguiente secuencia de comandos en tu consola de comandos:
+
+1. **Instalación de paquetes de Node de la aplicación:**
+   ```bash
+   npm install
+   ```
+2. **Inicialización del Servidor Backend (Puerto 3000):**
+    ```Bash
+    node server.js
+    ```
+
+Despliegue del Servidor Web Frontend:
+
+    Abre el archivo index.html utilizando la extensión Live Server desde Visual Studio Code para simular el origen cruzado y prevenir restricciones de seguridad (CORS).
+
+© 2026 - Desarrollo de Aplicaciones WEB | Proyecto Materia
+
+---
+
+### 🛠️ Paso a Paso en Git: El Commit de Mejoras y el Merge Limpio a Main
+
+Como mencionaste que deseas aplicar estos cambios como un commit de mejoras en tu rama de desarrollo antes de unificarlo todo de forma limpia en `main` sin duplicar información vieja, sigue esta guía de comandos en tu terminal:
+
+#### Paso 1: Guardar las mejoras en la rama de la Etapa 3
+Estando en tu rama de desarrollo, ejecuta estos comandos para consolidar los archivos optimizados:
+
+```bash
+# Asegúrate de estar en la rama de backend
+git checkout etapa-3/backend
+
+# Añade las modificaciones hechas al HTML, CSS y README
+git add index.html style.css README.md
+
+# Genera el commit formal de optimización tipográfica y documental
+git commit -m "refactor: optimizar estructura html para log dinamico y pulir README de la etapa 3"
+
+# Sube los últimos cambios de la rama a GitHub
+git push origin etapa-3/backend

@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Participación de Yocairis Pérez (100054667) - ETAPA 3 ---
     // Resumen: Función GET para consultar el historial de incidencias desde la 
-    // base de datos y pintarlo dinámicamente en el panel lateral.
+    // base de datos y pintarlo dinámicamente en el panel lateral corrigiendo la zona horaria.
     const fetchAndRenderBugs = async () => {
         try {
             const response = await fetch(API_URL);
@@ -106,7 +106,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             bugs.forEach(bug => {
                 const bugColorClass = bug.severity === 'high' ? 'status-alert' : 'status-alert success';
-                const time = new Date(bug.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                // Formateamos el string de SQLite a ISO 8601 agregando la 'Z' de UTC
+                const utcDateStr = bug.created_at.replace(' ', 'T') + 'Z';
+                
+                // Forzamos la conversión exacta a la zona horaria GMT-4
+                const time = new Date(utcDateStr).toLocaleTimeString('es-DO', {
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    timeZone: 'America/Santo_Domingo'
+                });
+
                 logContainer.innerHTML += `
                     <div class="${bugColorClass}">
                         <strong>[${time}] Módulo ${bug.module}:</strong> ${bug.description}
@@ -117,7 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
-
 
     // --- Participación de Alex Santana (100074369) - ETAPA 3 ---
     // Resumen: Envío del formulario usando Fetch API (POST) para registrar
