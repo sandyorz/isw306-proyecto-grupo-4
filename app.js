@@ -1,9 +1,14 @@
-// --- Parte 1: Participación de Sandy Ortíz (100049907) ---
-// Resumen: Aquí agarré los elementos principales del DOM usando sus IDs para manipularlos 
-// y preparé la expresión regular para validar el correo del reportador.
+// ==========================================================================
+// RESUMEN ETAPA 2 (Base del Frontend)
+// Autores originales: Sandy Ortíz, Albert Peña, y Alexander Tejeda.
+// Descripción: En la etapa anterior se capturaron los elementos del DOM, 
+// se crearon las validaciones de negocio (campos vacíos, longitud mínima) 
+// y las funciones para mostrar/ocultar los errores visuales en tiempo real.
+// ==========================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
     
+    // --- Elementos del DOM (Base Etapa 2) ---
     const form = document.getElementById('bug-tracker-form');
     const emailInput = document.getElementById('reporter-email');
     const severityInput = document.getElementById('severity');
@@ -11,12 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const descInput = document.getElementById('description');
     const formAlert = document.getElementById('form-alert');
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    // --- Parte 3: Participación de Alexander Tejeda (100074246) ---
-    // Resumen: Yo programé las funciones para inyectar o limpiar las clases CSS de error 
-    // y los eventos "input" para que la validación ocurra en tiempo real al escribir.
-    
+    // --- Funciones UI de Error (Base Etapa 2) ---
     const showError = (input, span, message) => {
         input.classList.add('input-error'); 
         span.innerHTML = message;          
@@ -27,17 +27,18 @@ document.addEventListener('DOMContentLoaded', () => {
         span.innerHTML = '';                  
     };
 
-    emailInput.addEventListener('input', validateEmail);
-    severityInput.addEventListener('change', validateSeverity);
-    moduleInput.addEventListener('input', validateModule);
-    descInput.addEventListener('input', validateDescription);
+    // ==========================================================================
+    // INICIO APORTES ETAPA 3 (Integración Backend y BD)
+    // ==========================================================================
+
+    // --- Participación de Alex Santana (100074369) - ETAPA 3 ---
+    // Resumen: Regex robusto actualizado según recomendación del profesor y 
+    // declaración de la URL de la API Node.js para conectar con el backend.
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    const API_URL = 'http://localhost:3000/api/bugs';
 
 
-
-// --- Parte 2: Participación de Albert Peña (100037998) ---
-    // Resumen: Estas son las funciones que checan las reglas del negocio. Validan si el usuario 
-    // dejó cosas vacías o si el texto es muy corto para considerarse un reporte válido.
-    
+    // --- Validaciones de Negocio (Base Etapa 2) ---
     const validateEmail = () => {
         const errorSpan = document.getElementById('email-error');
         if (emailInput.value.trim() === '') {
@@ -81,66 +82,63 @@ document.addEventListener('DOMContentLoaded', () => {
         return true;
     };
 
-
-    // --- Parte 3: Participación de Alexander Tejeda (100074246) ---
-    // Resumen: Yo programé las funciones para inyectar o limpiar las clases CSS de error 
-    // y los eventos "input" para que la validación ocurra en tiempo real al escribir.
-    
-    const showError = (input, span, message) => {
-        input.classList.add('input-error'); 
-        span.innerHTML = message;          
-    };
-
-    const clearError = (input, span) => {
-        input.classList.remove('input-error'); 
-        span.innerHTML = '';                  
-    };
-
+    // --- Eventos en tiempo real (Base Etapa 2) ---
     emailInput.addEventListener('input', validateEmail);
     severityInput.addEventListener('change', validateSeverity);
     moduleInput.addEventListener('input', validateModule);
     descInput.addEventListener('input', validateDescription);
 
 
-     // --- Parte 4: Participación de Alex Santana (100074369) ---
-    // Resumen: Me encargué de detener el submit por defecto, guardar los datos en 
-    // LocalStorage con arreglos y mostrar la alerta verde si todo sale bien.
+    // --- Participación de Yocairis Pérez (100054667) - ETAPA 3 ---
     
-    form.addEventListener('submit', (e) => {
+
+
+    // --- Participación de Alex Santana (100074369) - ETAPA 3 ---
+    // Resumen: Envío del formulario usando Fetch API (POST) para registrar
+    // el nuevo bug en la base de datos de SQLite en lugar de LocalStorage.
+    form.addEventListener('submit', async (e) => {
         e.preventDefault(); 
-
-        const isEmailValid = validateEmail();
-        const isSeverityValid = validateSeverity();
-        const isModuleValid = validateModule();
-        const isDescValid = validateDescription();
-
-        if (isEmailValid && isSeverityValid && isModuleValid && isDescValid) {
+        
+        if (validateEmail() && validateSeverity() && validateModule() && validateDescription()) {
             
             const newBugReport = {
-                id: Date.now(),
                 email: emailInput.value.trim(),
                 severity: severityInput.value,
                 module: moduleInput.value.trim(),
-                description: descInput.value.trim(),
-                date: new Date().toLocaleDateString()
+                description: descInput.value.trim()
             };
-
-            let ticketsArray = JSON.parse(localStorage.getItem('bugTickets')) || [];
-            ticketsArray.push(newBugReport);
-            localStorage.setItem('bugTickets', JSON.stringify(ticketsArray));
             
-            formAlert.innerHTML = `<strong>¡Perfecto!</strong> El bug en ${newBugReport.module} fue registrado con éxito.`;
-            formAlert.className = 'status-alert success';
-            formAlert.classList.remove('hidden');
-            
-            form.reset(); 
-            
-            setTimeout(() => { formAlert.classList.add('hidden'); }, 4000);
-            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newBugReport)
+                });
+                
+                if (response.ok) {
+                    formAlert.innerHTML = `<strong>¡API OK!</strong> Bug registrado en BD.`;
+                    formAlert.className = 'status-alert success';
+                    formAlert.classList.remove('hidden');
+                    
+                    form.reset(); 
+                    
+                    // Se ejecuta la función de Yocairis para refrescar la vista
+                    if(typeof fetchAndRenderBugs === 'function') fetchAndRenderBugs(); 
+                    
+                    setTimeout(() => { formAlert.classList.add('hidden'); }, 4000);
+                }
+            } catch (error) {
+                formAlert.innerHTML = `<strong>Error:</strong> Sin conexión al Backend.`;
+                formAlert.className = 'status-alert';
+                formAlert.classList.remove('hidden');
+            }
         } else {
             formAlert.innerHTML = `<strong>Atención:</strong> Tienes errores en el formulario, revisa los campos en rojo.`;
             formAlert.className = 'status-alert';
             formAlert.classList.remove('hidden');
         }
     });
+
+    // Carga inicial del historial al abrir la página (Aporte Yocairis)
+    fetchAndRenderBugs();
 });
