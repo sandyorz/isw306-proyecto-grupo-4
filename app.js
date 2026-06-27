@@ -90,6 +90,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- Participación de Yocairis Pérez (100054667) - ETAPA 3 ---
+    // Resumen: Función GET para consultar el historial de incidencias desde la 
+    // base de datos y pintarlo dinámicamente en el panel lateral.
+    const fetchAndRenderBugs = async () => {
+        try {
+            const response = await fetch(API_URL);
+            const bugs = await response.json();
+            const logContainer = document.querySelector('.system-status-panel');
+            logContainer.innerHTML = '<h3>Log del Sistema (Historial BD)</h3>';
+            
+            if(bugs.length === 0) {
+                logContainer.innerHTML += '<div class="status-alert success">Sin incidencias registradas.</div>';
+                return;
+            }
+
+            bugs.forEach(bug => {
+                const bugColorClass = bug.severity === 'high' ? 'status-alert' : 'status-alert success';
+                const time = new Date(bug.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                logContainer.innerHTML += `
+                    <div class="${bugColorClass}">
+                        <strong>[${time}] Módulo ${bug.module}:</strong> ${bug.description}
+                    </div>`;
+            });
+        } catch (error) { 
+            console.error('Error al cargar historial:', error); 
+        }
+    };
     
 
 
