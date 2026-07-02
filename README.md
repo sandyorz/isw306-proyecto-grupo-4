@@ -67,25 +67,3 @@ Despliegue del Servidor Web Frontend:
     Abre el archivo index.html utilizando la extensión Live Server desde Visual Studio Code para simular el origen cruzado y prevenir restricciones de seguridad (CORS).
 
 © 2026 - Desarrollo de Aplicaciones WEB | Proyecto Materia
-
----
-
-### 🛠️ Paso a Paso en Git: El Commit de Mejoras y el Merge Limpio a Main
-
-Como mencionaste que deseas aplicar estos cambios como un commit de mejoras en tu rama de desarrollo antes de unificarlo todo de forma limpia en `main` sin duplicar información vieja, sigue esta guía de comandos en tu terminal:
-
-#### Paso 1: Guardar las mejoras en la rama de la Etapa 3
-Estando en tu rama de desarrollo, ejecuta estos comandos para consolidar los archivos optimizados:
-
-```bash
-# Asegúrate de estar en la rama de backend
-git checkout etapa-3/backend
-
-# Añade las modificaciones hechas al HTML, CSS y README
-git add index.html style.css README.md
-
-# Genera el commit formal de optimización tipográfica y documental
-git commit -m "refactor: optimizar estructura html para log dinamico y pulir README de la etapa 3"
-
-# Sube los últimos cambios de la rama a GitHub
-git push origin etapa-3/backend
