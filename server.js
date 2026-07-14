@@ -126,6 +126,17 @@ app.get('/api/bugs', (req, res) => {
 });
 // ===== FIN ETAPA 4 | Sandy Ortiz =====
 
+// ===== ETAPA 4 | Sandy Ortiz | GET por ID =====
+app.get('/api/bugs/:id', (req, res) => {
+    const sql = 'SELECT * FROM bugs WHERE id = ?';
+    db.get(sql, [req.params.id], (err, row) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (!row) return res.status(404).json({ error: 'No encontrado' });
+        res.json(row);
+    });
+});
+// ===== FIN ETAPA 4 | Sandy Ortiz =====
+
 app.post('/api/bugs', (req, res) => {
     const { email, severity, module, description } = req.body;
     const sql = 'INSERT INTO bugs (email, severity, module, description) VALUES (?, ?, ?, ?)';
