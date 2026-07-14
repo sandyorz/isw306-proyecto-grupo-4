@@ -363,8 +363,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== FIN ETAPA 4 | Sandy Ortiz =====
 
     // ===== ETAPA 4 | Alex Santana | Filtros =====
-
-
+ document.getElementById('filter-btn').addEventListener('click', fetchAndRenderAllBugs);
+    document.getElementById('filter-reset-btn').addEventListener('click', () => {
+        document.getElementById('filter-severity').value = '';
+        document.getElementById('filter-module').value = '';
+        fetchAndRenderAllBugs();
+    });
     // ===== FIN ETAPA 4 | Alex Santana =====
 
     // ===== ETAPA 4 | Alexander Tejeda | KPIs dinamicos =====
@@ -373,7 +377,73 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== FIN ETAPA 4 | Alexander Tejeda =====
 
     // ===== ETAPA 4 | Alex Santana | Formulario POST/PUT =====
+form.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
+        if (validateEmail() && validateSeverity() && validateModule() && validateDescription()) {
+
+            const bugData = {
+                email: emailInput.value.trim(),
+                severity: severityInput.value,
+                module: moduleInput.value.trim(),
+                description: descInput.value.trim()
+            };
+
+            try {
+                let response;
+                if (editingBugId) {
+                    response = await fetch(API_URL + '/' + editingBugId, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify(bugData)
+                    });
+                } else {
+                    response = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(bugData)
+                    });
+                }
+
+                if (response.ok) {
+                    const msg = editingBugId ? 'Bug actualizado en BD.' : 'Bug registrado en BD.';
+                    formAlert.innerHTML = '<strong>✔ Exito!</strong> ' + msg;
+                    formAlert.className = 'status-alert success';
+                    formAlert.classList.remove('hidden', 'alert-hiding');
+
+                    form.reset();
+                    editingBugId = null;
+                    submitBtn.textContent = 'Registrar Incidencia';
+
+                    fetchAndRenderRecentBugs();
+                    fetchAndRenderKPIs();
+                    if (currentUser) fetchAndRenderAllBugs();
+
+                    setTimeout(() => {
+                        formAlert.classList.add('alert-hiding');
+                        setTimeout(() => {
+                            formAlert.classList.add('hidden');
+                            formAlert.classList.remove('alert-hiding');
+                        }, 250);
+                    }, 3000);
+                } else {
+                    const errData = await response.json();
+                    formAlert.innerHTML = '<strong>Error:</strong> ' + (errData.error || 'Error del servidor');
+                    formAlert.className = 'status-alert';
+                    formAlert.classList.remove('hidden');
+                }
+            } catch (error) {
+                formAlert.innerHTML = '<strong>Error:</strong> Sin conexion al Backend.';
+                formAlert.className = 'status-alert';
+                formAlert.classList.remove('hidden');
+            }
+        } else {
+            formAlert.innerHTML = '<strong>Atencion:</strong> Tienes errores en el formulario, revisa los campos en rojo.';
+            formAlert.className = 'status-alert';
+            formAlert.classList.remove('hidden');
+        }
+    });
 
     // ===== FIN ETAPA 4 | Alex Santana =====
 
