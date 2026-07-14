@@ -136,6 +136,25 @@ app.delete('/api/bugs/:id', requireAuth, (req, res) => {
 
 // ===== ETAPA 4 | Alexander Tejeda | KPIs =====
 
+app.get('/api/kpis', (req, res) => {
+    const queries = {
+        total: 'SELECT COUNT(*) as value FROM bugs',
+        high: 'SELECT COUNT(*) as value FROM bugs WHERE severity = "high"',
+        today: "SELECT COUNT(*) as value FROM bugs WHERE date(created_at) = date('now')",
+        modules: 'SELECT COUNT(DISTINCT module) as value FROM bugs'
+    };
+    const results = {};
+    let completed = 0;
+    const keys = Object.keys(queries);
+    keys.forEach(key => {
+        db.get(queries[key], [], (err, row) => {
+            results[key] = err ? 0 : row.value;
+            completed++;
+            if (completed === keys.length) res.json(results);
+        });
+    });
+});
+
 // ===== FIN ETAPA 4 | Alexander Tejeda =====
 
 app.listen(PORT, () => {
