@@ -746,6 +746,32 @@ body {
 }
 
 /* ===== ETAPA 4 | Yocairis Perez | Dashboard Responsive ===== */
+@media (max-width: 768px) {
+    .kpi-dashboard h2 {
+        font-size: 1.1rem;
+    }
+
+    .metric-card {
+        padding: 15px;
+    }
+
+    .metric-card h3 {
+        font-size: 0.85rem;
+    }
+
+    .metric-value {
+        font-size: 1.6rem;
+    }
+
+    .main-content {
+        padding: 20px;
+    }
+
+    .main-content h2 {
+        font-size: 1.15rem;
+        margin-bottom: 15px;
+    }
+}
 
 /* ===== FIN ETAPA 4 | Yocairis Perez ===== */
 
@@ -756,10 +782,140 @@ body {
 /* ===== FIN ETAPA 4 | Alex Santana ===== */
 
 /* ===== ETAPA 4 | Yocairis Perez | Tabla Responsive ===== */
+.table-responsive-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+    .bugs-table {
+        font-size: 0.85rem;
+    }
+
+    .bugs-table th {
+        padding: 10px 8px;
+        font-size: 0.75rem;
+    }
+
+    .bugs-table td {
+        padding: 8px;
+        font-size: 0.82rem;
+    }
+
+    .td-desc {
+        max-width: 160px;
+    }
+
+    .badge {
+        padding: 4px 8px;
+        font-size: 0.72rem;
+    }
+}
 
 /* ===== FIN ETAPA 4 | Yocairis Perez ===== */
 
 /* ===== ETAPA 4 | Yocairis Perez | Acciones de Tabla ===== */
+.btn-edit,
+.btn-delete {
+    padding: 8px 14px;
+    font-size: 0.82rem;
+}
+
+@media (max-width: 480px) {
+
+    .btn-edit,
+    .btn-delete {
+        padding: 10px 16px;
+        font-size: 0.85rem;
+        display: inline-block;
+        min-width: 70px;
+        text-align: center;
+    }
+
+    .btn-edit {
+        margin-right: 6px;
+        margin-bottom: 4px;
+    }
+
+    .td-actions {
+        white-space: nowrap;
+        min-width: 140px;
+    }
+
+    .bugs-table td:last-child {
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .bugs-table thead {
+        display: none;
+    }
+
+    .bugs-table,
+    .bugs-table tbody,
+    .bugs-table tr {
+        display: block;
+        width: 100%;
+    }
+
+    .bugs-table tr {
+        margin-bottom: 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        padding: 10px;
+        background-color: var(--text-light);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    }
+
+    .bugs-table td {
+        display: flex;
+        border: none;
+        padding: 6px 8px;
+        text-align: left;
+        font-size: 0.85rem;
+        min-height: 28px;
+        align-items: flex-start;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .bugs-table td::before {
+        content: attr(data-label);
+        flex: 0 0 100px;
+        font-weight: 600;
+        font-size: 0.72rem;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        white-space: nowrap;
+        position: static;
+        width: auto;
+        line-height: 1.5;
+    }
+
+    .bugs-table td:last-child {
+        display: block;
+        padding-left: 8px;
+        text-align: center;
+    }
+
+    .bugs-table td:last-child::before {
+        display: none;
+    }
+
+    .td-desc {
+        max-width: none;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+        flex: 1;
+    }
+
+    .table-responsive-wrapper {
+        overflow-x: visible;
+    }
+}
 
 /* ===== FIN ETAPA 4 | Yocairis Perez ===== */
 
