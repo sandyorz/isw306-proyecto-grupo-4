@@ -129,7 +129,6 @@ body {
    ========================================================================== */
 .sidebar-nav {
     background-color: #1a2952;
-    /* Variante tonal para diferenciar el menú lateral */
     width: 250px;
     padding: 20px 0;
     position: sticky;
@@ -139,6 +138,10 @@ body {
     overflow-y: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+    display: none;
 }
 
 .sidebar-nav ul {
@@ -450,25 +453,24 @@ body {
     .grid-cards {
         flex-direction: column;
     }
-}
 
+    .app-header {
+        position: static;
+        min-height: auto;
+    }
 
-.app-header {
-    position: static;
-    min-height: auto;
-}
+    .app-header h1 {
+        font-size: 1.2rem;
+        max-width: 400px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
-.app-header h1 {
-    font-size: 1.2rem;
-    max-width: 400px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-#app-container {
-    padding-top: 0;
-    overflow: visible;
+    #app-container {
+        padding-top: 0;
+        overflow: visible;
+    }
 }
 
 /* ==========================================================================
