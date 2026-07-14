@@ -1,125 +1,281 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DevOps & QA Dashboard | Grupo 4</title>
+    <!-- ===== ETAPA 4 | Sandy Ortiz | Bootstrap CDN ===== -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <!-- Custom CSS (sobreescribe Bootstrap intencionalmente) -->
     <link rel="stylesheet" href="style.css">
+    <!-- ===== FIN ETAPA 4 | Sandy Ortiz ===== -->
 </head>
+
 <body>
 
-    <header class="app-header">
-        <div class="brand-container">
-            <h1>Sistema de Gestión - Desarrollo de Aplicaciones WEB</h1>
+    <!-- ===== ETAPA 4 | Alex Santana | Login Section ===== -->
+    <section id="login-section">
+        <div class="login-brand-top">
+            <h1>Sistema de Gestion - Desarrollo de Aplicaciones WEB</h1>
+            <span class="user-state-label">Estado: <strong>Invitado</strong> &mdash; No has iniciado sesion</span>
         </div>
-        <div class="user-profile">
-            <span>Ingeniería de Software | Grupo 4</span>
-        </div>
-    </header>
-
-    <div class="layout-wrapper">
-        
-        <nav class="sidebar-nav">
-            <ul>
-                <li><a href="#" class="active">Dashboard de Métricas</a></li>
-                <li><a href="#">Backlog de Tareas</a></li>
-                <li><a href="#">Control de Calidad (QA)</a></li>
-                <li><a href="#">Entornos de Despliegue</a></li>
-            </ul>
-        </nav>
-
-        <main class="main-content">
-            
-            <section class="kpi-dashboard">
-                <h2>Estado del Sprint Actual</h2>
-                <div class="grid-cards">
-                    <article class="metric-card">
-                        <h3>Tareas Completadas</h3>
-                        <p class="metric-value">24 / 30</p>
-                    </article>
-                    <article class="metric-card">
-                        <h3>Cobertura de Pruebas</h3>
-                        <p class="metric-value">85%</p>
-                    </article>
-                    <article class="metric-card">
-                        <h3>Bugs Críticos (Producción)</h3>
-                        <p class="metric-value alert-text">1</p>
-                    </article>
+        <div class="login-container">
+            <h2>Acceso al Panel de Gestion</h2>
+            <p>Ingrese con credenciales del equipo para administrar incidencias.</p>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-username">Usuario</label>
+                    <input type="text" id="login-username" placeholder="admin">
                 </div>
-            </section>
+                <div class="form-group">
+                    <label for="login-password">Contrasena</label>
+                    <input type="password" id="login-password" placeholder="••••••">
+                </div>
+                <button type="submit" class="btn-primary">Ingresar</button>
+                <div id="login-error" class="error-text" style="margin-top:10px;"></div>
+            </form>
+        </div>
+    </section>
+    <!-- ===== FIN ETAPA 4 | Alex Santana ===== -->
 
-            <hr class="section-divider">
+    <div id="app-container" class="hidden">
 
-            <section class="form-section">
-                <h2>Registro de Nueva Incidencia (Bug Tracking)</h2>
-                
-                <div id="form-alert" class="hidden"></div>
 
-                <form id="bug-tracker-form" action="#" method="POST" class="standard-form">
-                    
-                    <div class="form-group">
-                        <label for="reporter-email">Correo del Reportador</label>
-                        <input type="email" id="reporter-email" name="reporter-email" placeholder="ejemplo@grupo4.com">
-                        <span class="error-text" id="email-error"></span>
+
+
+
+
+
+
+
+
+        <header class="app-header">
+
+            <div class="brand-container">
+                <!-- ===== ETAPA 4 | Sandy Ortiz | Responsive Core ===== -->
+                <button id="hamburger-btn" class="hamburger-btn" aria-label="Menu de navegacion">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+                <!-- ===== FIN ETAPA 4 | Sandy Ortiz ===== -->
+                <h1>Sistema de Gestion - Desarrollo de Aplicaciones WEB</h1>
+            </div>
+            <div class="user-profile" id="user-profile">
+                <div class="user-badge" id="user-badge">
+                    <span class="user-icon" id="user-icon"><i class="bi bi-person-circle"></i></span>
+
+                    <div class="user-info">
+                        <span class="user-name" id="user-display">Invitado</span>
+                        <span class="user-role" id="user-role">Sin sesion</span>
                     </div>
+                    <button id="logout-btn" class="logout-btn hidden">Cerrar Sesion</button>
+                </div>
+            </div>
+        </header>
 
-                    <div class="form-group">
-                        <label for="severity">Nivel de Severidad</label>
-                        <select id="severity" name="severity">
-                            <option value="">Seleccione una opción...</option>
-                            <option value="low">Baja - UI/UX Menor</option>
-                            <option value="medium">Media - Funcionalidad Parcial</option>
-                            <option value="high">Alta - Falla Crítica (Blocker)</option>
+        <div class="layout-wrapper">
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" class="active">Dashboard de Metricas</a></li>
+                    <li><a href="#">Backlog de Tareas</a></li>
+                    <li><a href="#">Control de Calidad (QA)</a></li>
+                    <li><a href="#">Entornos de Despliegue</a></li>
+                </ul>
+            </nav>
+            <!-- ===== ETAPA 4 | Sandy Ortiz | Responsive Core ===== -->
+            <div id="sidebar-overlay" class="sidebar-overlay"></div>
+            <!-- ===== FIN ETAPA 4 | Sandy Ortiz ===== -->
+
+            <main class="main-content">
+
+                <section class="kpi-dashboard">
+                    <h2>Estado del Sprint Actual</h2>
+                    <div class="grid-cards">
+                        <article class="metric-card">
+                            <h3>Total Incidencias</h3>
+                            <p class="metric-value" id="kpi-total">-</p>
+                        </article>
+                        <article class="metric-card">
+                            <h3>Bugs Criticos</h3>
+                            <p class="metric-value alert-text" id="kpi-high">-</p>
+                        </article>
+                        <article class="metric-card">
+                            <h3>Incidencias Hoy</h3>
+                            <p class="metric-value" id="kpi-today">-</p>
+                        </article>
+                        <article class="metric-card">
+                            <h3>Modulos Afectados</h3>
+                            <p class="metric-value" id="kpi-modules">-</p>
+                        </article>
+                    </div>
+                </section>
+
+                <hr class="section-divider">
+
+                <!-- ===== ETAPA 4 | Alex Santana | Formulario ===== -->
+                <section class="form-section">
+                    <h2>Registro de Nueva Incidencia (Bug Tracking)</h2>
+
+                    <div id="form-alert" class="hidden"></div>
+
+                    <form id="bug-tracker-form" action="#" method="POST" class="standard-form">
+
+                        <div class="form-group">
+                            <label for="reporter-email">Correo del Reportador</label>
+                            <input type="email" id="reporter-email" name="reporter-email"
+                                placeholder="ejemplo@grupo4.com"
+                                data-tooltip="Ingrese un correo valido del reportador.">
+                            <span class="error-text" id="email-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="severity">Nivel de Severidad</label>
+                            <select id="severity" name="severity"
+                                data-tooltip="Indique el nivel de impacto del incidente.">
+                                <option value="">Seleccione una opcion...</option>
+                                <option value="low">Baja - UI/UX Menor</option>
+                                <option value="medium">Media - Funcionalidad Parcial</option>
+                                <option value="high">Alta - Falla Critica (Blocker)</option>
+                            </select>
+                            <span class="error-text" id="severity-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="module">Modulo Afectado</label>
+                            <input type="text" id="module" name="module"
+                                placeholder="Ej. Autenticacion, Base de Datos..."
+                                data-tooltip="Nombre del area afectada.">
+                            <span class="error-text" id="module-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Descripcion Tecnica del Error</label>
+                            <textarea id="description" name="description" rows="3"
+                                placeholder="Pasos para reproducir la incidencia..."
+                                data-tooltip="Describa pasos para reproducir el problema."></textarea>
+                            <span class="error-text" id="description-error"></span>
+                        </div>
+
+                        <button type="submit" id="submit-btn" class="btn-primary">Registrar Incidencia</button>
+                    </form>
+                </section>
+                <!-- ===== FIN ETAPA 4 | Alex Santana ===== -->
+
+                <hr class="section-divider">
+
+                <!-- ===== ETAPA 4 | Alex Santana | Filtros ===== -->
+                <section id="filter-section" class="hidden">
+                    <h2>Filtrar Incidencias</h2>
+                    <div class="filter-bar">
+                        <select id="filter-severity">
+                            <option value="">Todas las severidades</option>
+                            <option value="low">Baja</option>
+                            <option value="medium">Media</option>
+                            <option value="high">Alta</option>
                         </select>
-                        <span class="error-text" id="severity-error"></span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="module">Módulo Afectado</label>
-                        <input type="text" id="module" name="module" placeholder="Ej. Autenticación, Base de Datos...">
-                        <span class="error-text" id="module-error"></span>
-                    </div>
+                        <input type="text" id="filter-module" placeholder="Nombre del modulo...">
+                        <button id="filter-btn" class="btn-secondary">Filtrar</button>
+                        <button id="filter-reset-btn" class="btn-secondary">Limpiar</button>
 
-                    <div class="form-group">
-                        <label for="description">Descripción Técnica del Error</label>
-                        <textarea id="description" name="description" rows="3" placeholder="Pasos para reproducir la incidencia..."></textarea>
-                        <span class="error-text" id="description-error"></span>
+
+
+
                     </div>
+                </section>
+                <!-- ===== FIN ETAPA 4 | Alex Santana ===== -->
 
-                    <button type="submit" id="submit-btn" class="btn-primary">Registrar Incidencia</button>
-                </form>
-            </section>
-        </main>
+                <section id="bugs-section" class="hidden">
+                    <h2>Todas las Incidencias</h2>
+                    <!-- ===== ETAPA 4 | Yocairis Perez | Tabla Responsive ===== -->
+                    <div class="table-responsive-wrapper">
+                        <table class="bugs-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Severidad</th>
+                                    <th>Modulo</th>
+                                    <th>Descripcion</th>
+                                    <th>Email</th>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bugs-tbody"></tbody>
+                        </table>
+                    </div>
+                    <!-- ===== FIN ETAPA 4 | Yocairis Perez ===== -->
+                    <p id="bugs-empty" class="hidden" style="text-align:center;color:#888;padding:20px;">No hay
+                        incidencias registradas.</p>
+                </section>
+            </main>
 
-        <aside class="system-status-panel">
-            <h3>Log del Sistema (Historial BD)</h3>
-            <div class="status-alert success">Cargando incidencias desde el servidor...</div>
-        </aside>
+            <aside class="system-status-panel">
+                <h3>Log del Sistema (Ultimas 5)</h3>
+                <div class="status-alert success" id="aside-loading">Cargando incidencias desde el servidor...</div>
+                <div id="aside-log-container"></div>
+            </aside>
+
+
+
+        </div>
+
+
+        <footer class="app-footer">
+            <div class="footer-content">
+
+
+
+
+                <div class="footer-group-info">
+                    <h4>Grupo 4 - Desarrollo de Aplicaciones WEB</h4>
+                    <ul class="team-members">
+                        <li>Camille Paez - 100074544</li>
+                        <li>Albert Pena - 100037998</li>
+                        <li>Sandy Ortiz - 100049907</li>
+                        <li>Alexander Tejeda - 100074246</li>
+                        <li>Alex Santana - 100074369</li>
+                        <li>Yocairis Perez - 100054667</li>
+                    </ul>
+                </div>
+
+                <div class="footer-copyright">
+                    <p>&copy; 2026 - Proyecto Integrador</p>
+                </div>
+
+            </div>
+        </footer>
 
     </div>
 
-    <footer class="app-footer">
-        <div class="footer-content">
-            
-            <div class="footer-group-info">
-                <h4>Grupo 4 - Desarrollo de Aplicaciones WEB</h4>
-                <ul class="team-members">
-                    <li>Camille Páez - 100074544</li>
-                    <li>Albert Peña - 100037998</li>
-                    <li>Sandy Ortíz - 100049907</li>
-                    <li>Alexander Tejeda - 100074246</li>
-                    <li>Alex Santana - 100074369</li>
-                    <li>Yocairis Pérez - 100054667</li>
-                </ul>
+    <!-- ===== ETAPA 4 | Sandy Ortiz | Bootstrap Modal ===== -->
+    <div class="modal fade" id="delete-confirm-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Eliminar la incidencia <strong id="delete-confirm-id">#0</strong>? Esta accion no se puede
+                    deshacer.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" id="delete-cancel-btn"
+                        data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="delete-confirm-btn">Eliminar</button>
+                </div>
             </div>
 
-            <div class="footer-copyright">
-                <p>&copy; 2026 - Proyecto Integrador</p>
-            </div>
-            
         </div>
-    </footer>
+    </div>
+    <!-- ===== FIN ETAPA 4 | Sandy Ortiz ===== -->
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="app.js"></script>
 </body>
+
 </html>
