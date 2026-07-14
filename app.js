@@ -187,7 +187,37 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mejora visual: muestra icono, nombre de usuario y rol "Administrador"
     // cuando hay sesion activa; "Invitado / Sin sesion" cuando no.
 
+    function showManagementUI() {
+        const loginSection = document.getElementById('login-section');
+        const container = document.getElementById('app-container');
+        loginSection.classList.add('hidden');
+        loginSection.classList.remove('login-fade-out', 'login-fade-in');
+        container.classList.remove('hidden', 'dashboard-fade-out');
+        document.getElementById('user-display').textContent = currentUser.username;
+        document.getElementById('user-role').textContent = 'Administrador';
+        document.getElementById('logout-btn').classList.remove('hidden');
+        document.getElementById('filter-section').classList.remove('hidden');
+        document.getElementById('bugs-section').classList.remove('hidden');
+        fetchAndRenderAllBugs();
+        fetchAndRenderRecentBugs();
+        fetchAndRenderKPIs();
+    }
 
+    function hideManagementUI() {
+        const loginSection = document.getElementById('login-section');
+        const container = document.getElementById('app-container');
+        loginSection.classList.remove('hidden', 'login-fade-out', 'login-fade-in');
+        container.classList.add('hidden');
+        container.classList.remove('dashboard-entered', 'dashboard-fade-out');
+        document.getElementById('user-display').textContent = 'Invitado';
+        document.getElementById('user-role').textContent = 'Sin sesion';
+        document.getElementById('logout-btn').classList.add('hidden');
+        document.getElementById('filter-section').classList.add('hidden');
+        document.getElementById('bugs-section').classList.add('hidden');
+        editingBugId = null;
+        form.reset();
+        submitBtn.textContent = 'Registrar Incidencia';
+    }
     // ===== FIN ETAPA 4 | Alex Santana =====
 
     // --- Yocairis Perez (ETAPA 3) - Aside panel (recent 5) ---
@@ -373,11 +403,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ===== ETAPA 4 | Alexander Tejeda | KPIs dinamicos =====
 
-
+    async function fetchAndRenderKPIs() {
+        try {
+            const res = await fetch(API_BASE + '/api/kpis');
+            const data = await res.json();
+            document.getElementById('kpi-total').textContent = data.total || 0;
+            document.getElementById('kpi-high').textContent = data.high || 0;
+            document.getElementById('kpi-today').textContent = data.today || 0;
+            document.getElementById('kpi-modules').textContent = data.modules || 0;
+        } catch (e) {
+            console.error('Error al cargar KPIs:', e);
+        }
+    }
     // ===== FIN ETAPA 4 | Alexander Tejeda =====
 
     // ===== ETAPA 4 | Alex Santana | Formulario POST/PUT =====
-form.addEventListener('submit', async (e) => {
+
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         if (validateEmail() && validateSeverity() && validateModule() && validateDescription()) {
@@ -448,8 +490,9 @@ form.addEventListener('submit', async (e) => {
     // ===== FIN ETAPA 4 | Alex Santana =====
 
     // ===== ETAPA 4 | Alexander Tejeda | Inicializacion =====
-
-
+    fetchAndRenderRecentBugs();
+    fetchAndRenderKPIs();
+    checkSession();
     // ===== FIN ETAPA 4 | Alexander Tejeda =====
 
     // ===== ETAPA 4 | Sandy Ortiz | Responsive Core =====
