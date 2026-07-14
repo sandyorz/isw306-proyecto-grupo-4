@@ -1,44 +1,54 @@
 // ==========================================================================
-// RESUMEN ETAPA 2 (Base del Frontend)
-// Autores originales: Sandy Ortíz, Albert Peña, y Alexander Tejeda.
-// Descripción: En la etapa anterior se capturaron los elementos del DOM, 
-// se crearon las validaciones de negocio (campos vacíos, longitud mínima) 
-// y las funciones para mostrar/ocultar los errores visuales en tiempo real.
+// PARTICIPACION ETAPA 2 (Base Frontend)
+// Sandy Ortiz, Albert Pena, Alexander Tejeda - DOM, validaciones, UI.
 // ==========================================================================
+// PARTICIPACION ETAPA 3
+// Alex Santana (100074369) - Regex robusto, API_URL, envio POST.
+// Yocairis Perez (100054667) - GET historial, renderizado en panel lateral.
+// ==========================================================================
+// PARTICIPACION ETAPA 4
+// Alex Santana (100074369) - Login/logout, filtros, modo edicion formulario,
+//   indicador de sesion (user-badge con nombre, rol y avatar).
+// Yocairis Perez (100054667) - Tabla de gestion, editar/eliminar bugs,
+//   layout profesional: header fijo, sidebar/aside sticky, scroll optimizado.
+// Alexander Tejeda (100074246) - KPIs dinamicos fetch y render.
+// ==========================================================================
+// ===== ETAPA 4 | Sandy Ortiz | Infraestructura =====
+// API_BASE dinámica para compatibilidad con VPN / Tailscale.
+// ===== FIN ETAPA 4 | Sandy Ortiz =====
 
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // --- Elementos del DOM (Base Etapa 2) ---
+
     const form = document.getElementById('bug-tracker-form');
     const emailInput = document.getElementById('reporter-email');
     const severityInput = document.getElementById('severity');
     const moduleInput = document.getElementById('module');
     const descInput = document.getElementById('description');
     const formAlert = document.getElementById('form-alert');
+    const submitBtn = document.getElementById('submit-btn');
 
-    // --- Funciones UI de Error (Base Etapa 2) ---
+    // ===== ETAPA 4 | Sandy Ortiz | VPN =====
+    const API_BASE = window.location.origin;
+    // ===== FIN ETAPA 4 | Sandy Ortiz =====
+    const API_URL = API_BASE + '/api/bugs';
+
+    let currentUser = null;
+    let editingBugId = null;
+    let isDeleting = false;
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+
     const showError = (input, span, message) => {
-        input.classList.add('input-error'); 
-        span.innerHTML = message;          
+        input.classList.add('input-error');
+        span.innerHTML = message;
     };
 
     const clearError = (input, span) => {
-        input.classList.remove('input-error'); 
-        span.innerHTML = '';                  
+        input.classList.remove('input-error');
+        span.innerHTML = '';
     };
 
-    // ==========================================================================
-    // INICIO APORTES ETAPA 3 (Integración Backend y BD)
-    // ==========================================================================
-
-    // --- Participación de Alex Santana (100074369) - ETAPA 3 ---
-    // Resumen: Regex robusto actualizado según recomendación del profesor y 
-    // declaración de la URL de la API Node.js para conectar con el backend.
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-    const API_URL = 'http://localhost:3000/api/bugs';
 
-
-    // --- Validaciones de Negocio (Base Etapa 2) ---
     const validateEmail = () => {
         const errorSpan = document.getElementById('email-error');
         if (emailInput.value.trim() === '') {
@@ -65,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const validateModule = () => {
         const errorSpan = document.getElementById('module-error');
         if (moduleInput.value.trim().length < 3) {
-            showError(moduleInput, errorSpan, 'Escribe el nombre del módulo (min. 3 letras).');
+            showError(moduleInput, errorSpan, 'Escribe el nombre del modulo (min. 3 letras).');
             return false;
         }
         clearError(moduleInput, errorSpan);
@@ -82,98 +92,252 @@ document.addEventListener('DOMContentLoaded', () => {
         return true;
     };
 
-    // --- Eventos en tiempo real (Base Etapa 2) ---
     emailInput.addEventListener('input', validateEmail);
     severityInput.addEventListener('change', validateSeverity);
     moduleInput.addEventListener('input', validateModule);
     descInput.addEventListener('input', validateDescription);
 
+    // ===== ETAPA 4 | Alex Santana | Login/Logout =====
+    // Alternativa B: sistema completamente oculto hasta autenticarse.
+    // Mejora evolutiva Etapa 4: header fijo, sidebar/aside sticky,
+    // scroll solo en contenido central, badge de usuario autenticado.
 
-    // --- Participación de Yocairis Pérez (100054667) - ETAPA 3 ---
-    // Resumen: Función GET para consultar el historial de incidencias desde la 
-    // base de datos y pintarlo dinámicamente en el panel lateral corrigiendo la zona horaria.
-    const fetchAndRenderBugs = async () => {
+
+    // ===== ETAPA 4 | Alex Santana | User Badge y Management UI =====
+    // Mejora visual: muestra icono, nombre de usuario y rol "Administrador"
+    // cuando hay sesion activa; "Invitado / Sin sesion" cuando no.
+
+
+    // ===== FIN ETAPA 4 | Alex Santana =====
+
+    // --- Yocairis Perez (ETAPA 3) - Aside panel (recent 5) ---
+
+    async function fetchAndRenderRecentBugs() {
         try {
-            const response = await fetch(API_URL);
+            const response = await fetch(API_URL + '?limit=5');
             const bugs = await response.json();
-            const logContainer = document.querySelector('.system-status-panel');
-            logContainer.innerHTML = '<h3>Log del Sistema (Historial BD)</h3>';
-            
-            if(bugs.length === 0) {
-                logContainer.innerHTML += '<div class="status-alert success">Sin incidencias registradas.</div>';
+            const container = document.getElementById('aside-log-container');
+            const loading = document.getElementById('aside-loading');
+            loading.classList.add('hidden');
+            container.innerHTML = '';
+            if (bugs.length === 0) {
+                container.innerHTML = '<div class="status-alert success">Sin incidencias registradas.</div>';
                 return;
             }
-
             bugs.forEach(bug => {
-                const bugColorClass = bug.severity === 'high' ? 'status-alert' : 'status-alert success';
-                
-                // Formateamos el string de SQLite a ISO 8601 agregando la 'Z' de UTC
+                const cls = bug.severity === 'high' ? 'status-alert' : 'status-alert success';
                 const utcDateStr = bug.created_at.replace(' ', 'T') + 'Z';
-                
-                // Forzamos la conversión exacta a la zona horaria GMT-4
                 const time = new Date(utcDateStr).toLocaleTimeString('es-DO', {
-                    hour: '2-digit', 
-                    minute: '2-digit',
+                    hour: '2-digit', minute: '2-digit',
                     timeZone: 'America/Santo_Domingo'
                 });
-
-                logContainer.innerHTML += `
-                    <div class="${bugColorClass}">
-                        <strong>[${time}] Módulo ${bug.module}:</strong> ${bug.description}
+                container.innerHTML += `
+                    <div class="${cls}">
+                        <strong>[${time}] Modulo ${bug.module}:</strong> ${bug.description}
                     </div>`;
             });
-        } catch (error) { 
-            console.error('Error al cargar historial:', error); 
+        } catch (error) {
+            console.error('Error al cargar historial:', error);
         }
-    };
-    
+    }
 
-    // --- Participación de Alex Santana (100074369) - ETAPA 3 ---
-    // Resumen: Envío del formulario usando Fetch API (POST) para registrar
-    // el nuevo bug en la base de datos de SQLite en lugar de LocalStorage.
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault(); 
-        
-        if (validateEmail() && validateSeverity() && validateModule() && validateDescription()) {
-            
-            const newBugReport = {
-                email: emailInput.value.trim(),
-                severity: severityInput.value,
-                module: moduleInput.value.trim(),
-                description: descInput.value.trim()
-            };
-            
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(newBugReport)
-                });
-                
-                if (response.ok) {
-                    formAlert.innerHTML = `<strong>¡API OK!</strong> Bug registrado en BD.`;
-                    formAlert.className = 'status-alert success';
-                    formAlert.classList.remove('hidden');
-                    
-                    form.reset(); 
-                    
-                    // Se ejecuta la función de Yocairis para refrescar la vista
-                    if(typeof fetchAndRenderBugs === 'function') fetchAndRenderBugs(); 
-                    
-                    setTimeout(() => { formAlert.classList.add('hidden'); }, 4000);
-                }
-            } catch (error) {
-                formAlert.innerHTML = `<strong>Error:</strong> Sin conexión al Backend.`;
-                formAlert.className = 'status-alert';
-                formAlert.classList.remove('hidden');
+    // --- Yocairis Perez (ETAPA 4) - Tabla de gestion de bugs ---
+
+    async function fetchAndRenderAllBugs() {
+        try {
+            const severity = document.getElementById('filter-severity').value;
+            const module = document.getElementById('filter-module').value.trim();
+            let url = API_URL;
+            const params = [];
+            if (severity) params.push('severity=' + encodeURIComponent(severity));
+            if (module) params.push('module=' + encodeURIComponent(module));
+            if (params.length) url += '?' + params.join('&');
+
+            const response = await fetch(url);
+            const bugs = await response.json();
+            const tbody = document.getElementById('bugs-tbody');
+            const empty = document.getElementById('bugs-empty');
+            tbody.innerHTML = '';
+            if (bugs.length === 0) {
+                empty.classList.remove('hidden');
+                return;
             }
-        } else {
-            formAlert.innerHTML = `<strong>Atención:</strong> Tienes errores en el formulario, revisa los campos en rojo.`;
-            formAlert.className = 'status-alert';
-            formAlert.classList.remove('hidden');
+            empty.classList.add('hidden');
+            bugs.forEach(bug => {
+                const tr = document.createElement('tr');
+                const severityLabel = { low: 'Baja', medium: 'Media', high: 'Alta' };
+                const severityBadge = bug.severity === 'high' ? 'badge-red' :
+                    bug.severity === 'medium' ? 'badge-yellow' : 'badge-green';
+                const fecha = bug.created_at ? bug.created_at.replace('T', ' ').slice(0, 16) : '-';
+                // ===== ETAPA 4 | Yocairis Perez | Tabla Responsive =====
+                tr.innerHTML = `
+                    <td data-label="ID">${bug.id}</td>
+                    <td data-label="Severidad"><span class="badge ${severityBadge}">${severityLabel[bug.severity] || bug.severity}</span></td>
+                    <td data-label="Modulo">${bug.module}</td>
+                    <td data-label="Descripcion" class="td-desc">${bug.description}</td>
+                    <td data-label="Email">${bug.email}</td>
+                    <td data-label="Fecha">${fecha}</td>
+                    <td data-label="Acciones" class="td-actions">
+                        <button class="btn-edit" data-id="${bug.id}">Editar</button>
+                        <button class="btn-delete" data-id="${bug.id}">Eliminar</button>
+                    </td>`;
+                // ===== FIN ETAPA 4 | Yocairis Perez =====
+                tbody.appendChild(tr);
+            });
+            document.querySelectorAll('.btn-edit').forEach(btn => {
+                btn.addEventListener('click', () => editBug(parseInt(btn.dataset.id)));
+            });
+            document.querySelectorAll('.btn-delete').forEach(btn => {
+                btn.addEventListener('click', () => deleteBug(parseInt(btn.dataset.id)));
+            });
+        } catch (error) {
+            console.error('Error al cargar incidencias:', error);
         }
-    });
+    }
 
-    // Carga inicial del historial al abrir la página (Aporte Yocairis)
-    fetchAndRenderBugs();
+    // --- Yocairis Perez (ETAPA 4) - Editar y eliminar bugs ---
+
+    function editBug(id) {
+        fetch(API_URL + '/' + id)
+            .then(r => r.json())
+            .then(bug => {
+                emailInput.value = bug.email;
+                severityInput.value = bug.severity;
+                moduleInput.value = bug.module;
+                descInput.value = bug.description;
+                editingBugId = bug.id;
+                submitBtn.textContent = 'Actualizar Incidencia #' + bug.id;
+                formAlert.innerHTML = '';
+                formAlert.className = 'hidden';
+                form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                form.classList.add('editing-mode');
+                setTimeout(() => form.classList.remove('editing-mode'), 3000);
+            })
+            .catch(err => console.error('Error al obtener bug:', err));
+    }
+
+    // ===== ETAPA 4 | Sandy Ortiz | Bootstrap Modal =====
+    let pendingDeleteId = null;
+    const deleteModalEl = document.getElementById('delete-confirm-modal');
+    const deleteConfirmBtn = document.getElementById('delete-confirm-btn');
+
+    if (deleteConfirmBtn && deleteModalEl) {
+        deleteConfirmBtn.addEventListener('click', () => {
+            if (pendingDeleteId !== null) {
+                const id = pendingDeleteId;
+                pendingDeleteId = null;
+                const modal = bootstrap.Modal.getInstance(deleteModalEl);
+                if (modal) modal.hide();
+                executeDelete(id);
+            }
+        });
+
+        deleteModalEl.addEventListener('hidden.bs.modal', () => {
+            pendingDeleteId = null;
+        });
+    }
+
+    function showDeleteModal(id) {
+        if (isDeleting) return;
+        pendingDeleteId = id;
+        document.getElementById('delete-confirm-id').textContent = '#' + id;
+        const modal = new bootstrap.Modal(deleteModalEl);
+        modal.show();
+    }
+
+    async function executeDelete(id) {
+        isDeleting = true;
+        const btn = document.querySelector(`.btn-delete[data-id="${id}"]`);
+        const row = btn?.closest('tr');
+        if (row) {
+            row.classList.add('deleting-row');
+            await new Promise(r => {
+                row.addEventListener('animationend', r, { once: true });
+                setTimeout(r, 500);
+            });
+        }
+        try {
+            const res = await fetch(API_URL + '/' + id, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+            if (res.ok) {
+                fetchAndRenderAllBugs();
+                fetchAndRenderRecentBugs();
+                fetchAndRenderKPIs();
+            } else {
+                const data = await res.json();
+                alert('Error: ' + (data.error || 'No autorizado'));
+                fetchAndRenderAllBugs();
+            }
+        } catch (err) {
+            console.error('Error al eliminar:', err);
+            fetchAndRenderAllBugs();
+        }
+        isDeleting = false;
+    }
+
+    function deleteBug(id) {
+        showDeleteModal(id);
+    }
+    // ===== FIN ETAPA 4 | Sandy Ortiz =====
+
+    // ===== ETAPA 4 | Alex Santana | Filtros =====
+
+
+    // ===== FIN ETAPA 4 | Alex Santana =====
+
+    // ===== ETAPA 4 | Alexander Tejeda | KPIs dinamicos =====
+
+
+    // ===== FIN ETAPA 4 | Alexander Tejeda =====
+
+    // ===== ETAPA 4 | Alex Santana | Formulario POST/PUT =====
+
+
+    // ===== FIN ETAPA 4 | Alex Santana =====
+
+    // ===== ETAPA 4 | Alexander Tejeda | Inicializacion =====
+
+
+    // ===== FIN ETAPA 4 | Alexander Tejeda =====
+
+    // ===== ETAPA 4 | Sandy Ortiz | Responsive Core =====
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const sidebarNav = document.querySelector('.sidebar-nav');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+    function closeSidebar() {
+        if (sidebarNav) sidebarNav.classList.remove('sidebar-open');
+        if (hamburgerBtn) hamburgerBtn.classList.remove('is-active');
+        if (sidebarOverlay) sidebarOverlay.classList.remove('active');
+    }
+
+    function openSidebar() {
+        if (sidebarNav) sidebarNav.classList.add('sidebar-open');
+        if (hamburgerBtn) hamburgerBtn.classList.add('is-active');
+        if (sidebarOverlay) sidebarOverlay.classList.add('active');
+    }
+
+    function toggleSidebar() {
+        if (sidebarNav && sidebarNav.classList.contains('sidebar-open')) {
+            closeSidebar();
+        } else {
+            openSidebar();
+        }
+    }
+
+    if (hamburgerBtn && sidebarNav) {
+        hamburgerBtn.addEventListener('click', toggleSidebar);
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', closeSidebar);
+        }
+        // Cerrar al hacer scroll
+        window.addEventListener('scroll', closeSidebar, { passive: true });
+        // Cerrar con tecla Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeSidebar();
+        });
+    }
+    // ===== FIN ETAPA 4 | Sandy Ortiz =====
 });

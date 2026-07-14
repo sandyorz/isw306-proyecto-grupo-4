@@ -43,7 +43,12 @@ app.use(express.static(__dirname));
 // ===== FIN ETAPA 4 | Sandy Ortiz =====
 
 // ===== ETAPA 4 | Albert Pena | Sesiones =====
-
+app.use(session({
+    secret: 'grupo4_sw_2026',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }
+}));
 // ===== FIN ETAPA 4 | Albert Pena =====
 
 const db = new sqlite3.Database('./devops_dashboard.db', (err) => {
@@ -63,20 +68,39 @@ const db = new sqlite3.Database('./devops_dashboard.db', (err) => {
 });
 
 // ===== ETAPA 4 | Albert Pena | requireAuth =====
-
+function requireAuth(req, res, next) {
+    if (req.session && req.session.user) return next();
+    res.status(401).json({ error: 'No autorizado' });
+}
 // ===== FIN ETAPA 4 | Albert Pena =====
 
 // ===== ETAPA 4 | Albert Pena | Login =====
-
+app.post('/api/login', (req, res) => {
+    const { username, password } = req.body;
+    if (username === 'admin' && password === 'grupo4') {
+        req.session.user = { username, role: 'admin' };
+        return res.json({ message: 'Login exitoso', user: req.session.user });
+    }
+    res.status(401).json({ error: 'Credenciales invalidas' });
+});
 // ===== FIN ETAPA 4 | Albert Pena =====
 
 // ===== ETAPA 4 | Albert Pena | Logout =====
-
+app.post('/api/logout', (req, res) => {
+    req.session.destroy(() => res.json({ message: 'Sesion cerrada' }));
+});
 // ===== FIN ETAPA 4 | Albert Pena =====
 
 // ===== ETAPA 4 | Albert Pena | Session Check =====
-
+app.get('/api/session', (req, res) => {
+    if (req.session && req.session.user) {
+        res.json({ authenticated: true, user: req.session.user });
+    } else {
+        res.json({ authenticated: false });
+    }
+});
 // ===== FIN ETAPA 4 | Albert Pena =====
+
 
 // ===== ETAPA 4 | Sandy Ortiz | GET con filtros =====
 app.get('/api/bugs', (req, res) => {
