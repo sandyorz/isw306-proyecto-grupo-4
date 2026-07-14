@@ -102,7 +102,87 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mejora evolutiva Etapa 4: header fijo, sidebar/aside sticky,
     // scroll solo en contenido central, badge de usuario autenticado.
 
+ async function checkSession() {
+        try {
+            const res = await fetch(API_BASE + '/api/session', { credentials: 'include' });
+            const data = await res.json();
+            if (data.authenticated) {
+                currentUser = data.user;
+                showManagementUI();
+                requestAnimationFrame(() => {
+                    document.getElementById('app-container').classList.add('dashboard-entered');
+                });
+            }
+        } catch (e) { /* servidor no disponible */ }
+    }
 
+    async function handleLogin(e) {
+        e.preventDefault();
+        const username = document.getElementById('login-username').value.trim();
+        const password = document.getElementById('login-password').value.trim();
+        const errorEl = document.getElementById('login-error');
+        const loginBtn = document.querySelector('#login-form .btn-primary');
+        try {
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Ingresando...';
+            const res = await fetch(API_BASE + '/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ username, password })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                currentUser = data.user;
+                errorEl.innerHTML = '';
+                const loginSection = document.getElementById('login-section');
+                const container = document.getElementById('app-container');
+                container.classList.remove('hidden');
+                document.getElementById('user-display').textContent = currentUser.username;
+                document.getElementById('user-role').textContent = 'Administrador';
+                document.getElementById('logout-btn').classList.remove('hidden');
+                document.getElementById('filter-section').classList.remove('hidden');
+                document.getElementById('bugs-section').classList.remove('hidden');
+                fetchAndRenderAllBugs();
+                fetchAndRenderRecentBugs();
+                fetchAndRenderKPIs();
+                loginSection.classList.add('login-fade-out');
+                await sleep(350);
+                loginSection.classList.add('hidden');
+                loginSection.classList.remove('login-fade-out');
+                requestAnimationFrame(() => {
+                    container.classList.add('dashboard-entered');
+                });
+            } else {
+                errorEl.innerHTML = data.error || 'Credenciales invalidas';
+            }
+        } catch (e) {
+            errorEl.innerHTML = 'Error de conexion con el servidor';
+        }
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Ingresar';
+    }
+
+    async function handleLogout() {
+        const container = document.getElementById('app-container');
+        const loginSection = document.getElementById('login-section');
+        container.classList.add('dashboard-fade-out');
+        await sleep(300);
+        try {
+            await fetch(API_BASE + '/api/logout', {
+                method: 'POST', credentials: 'include'
+            });
+        } catch (e) { /* ignorar */ }
+        currentUser = null;
+        hideManagementUI();
+        loginSection.classList.add('login-fade-in');
+        await sleep(350);
+        container.classList.remove('dashboard-fade-out', 'dashboard-entered');
+        loginSection.classList.remove('login-fade-in');
+    }
+
+    document.getElementById('login-form').addEventListener('submit', handleLogin);
+    document.getElementById('logout-btn').addEventListener('click', handleLogout);
     // ===== ETAPA 4 | Alex Santana | User Badge y Management UI =====
     // Mejora visual: muestra icono, nombre de usuario y rol "Administrador"
     // cuando hay sesion activa; "Invitado / Sin sesion" cuando no.

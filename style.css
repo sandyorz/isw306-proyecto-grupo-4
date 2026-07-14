@@ -776,9 +776,77 @@ body {
 /* ===== FIN ETAPA 4 | Yocairis Perez ===== */
 
 /* ===== ETAPA 4 | Alex Santana | Formularios ===== */
+@media (max-width: 768px) {
+    .standard-form {
+        max-width: 100%;
+        padding: 18px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 12px 10px;
+        font-size: 16px;
+    }
+
+    .btn-primary {
+        padding: 14px 20px;
+        font-size: 1rem;
+    }
+
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 12px;
+    }
+
+    .filter-bar select,
+    .filter-bar input {
+        min-width: 0;
+        width: 100%;
+        font-size: 16px;
+        padding: 10px 12px;
+    }
+
+    .filter-bar .btn-secondary {
+        width: 100%;
+        text-align: center;
+        padding: 10px 18px;
+    }
+}
 
 /* ===== ETAPA 4 | Alex Santana | UX ===== */
+#form-alert {
+    padding: 12px 16px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
 
+#form-alert.status-alert {
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+}
+
+#form-alert.status-alert.success {
+    background-color: #e8f8f5;
+    border-left-color: var(--color-success);
+}
+
+.form-section h2 {
+    font-size: 1.2rem;
+}
+
+@media (max-width: 480px) {
+    .form-section h2 {
+        font-size: 1rem;
+    }
+
+    #form-alert {
+        font-size: 0.85rem;
+        padding: 10px 14px;
+    }
+}
 /* ===== FIN ETAPA 4 | Alex Santana ===== */
 
 /* ===== ETAPA 4 | Yocairis Perez | Tabla Responsive ===== */
