@@ -7,14 +7,23 @@
    Variables Globales y Configuración del Tema Dinámico
    ========================================================================== */
 :root {
-    --brand-primary: #0b1838;       /* Azul Institucional */
-    --brand-accent: #F68121;        /* Naranja Institucional */
-    --bg-base: #f4f6f9;             /* Fondo General de la Interfaz */
-    --text-main: #333333;           /* Color de Texto Principal (Alta Legibilidad) */
-    --text-light: #ffffff;          /* Variantes de Texto Claro */
-    --color-danger: #e74c3c;        /* Indicadores de Estado de Error */
-    --color-success: #2ecc71;       /* Indicadores de Estado Exitoso */
-    --border-color: #e2e8f0;        /* Bordes Estructurales sutiles */
+    --brand-primary: #0b1838;
+    /* Azul Institucional */
+    --brand-accent: #F68121;
+    /* Naranja Institucional */
+    --bg-base: #f4f6f9;
+    /* Fondo General de la Interfaz */
+    --text-main: #333333;
+    /* Color de Texto Principal (Alta Legibilidad) */
+    --text-light: #ffffff;
+    /* Variantes de Texto Claro */
+    --color-danger: #e74c3c;
+    /* Indicadores de Estado de Error */
+    --color-success: #2ecc71;
+    /* Indicadores de Estado Exitoso */
+    --border-color: #e2e8f0;
+    /* Bordes Estructurales sutiles */
+    --header-height: 56px;
 }
 
 /* ==========================================================================
@@ -23,7 +32,8 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* Garantiza el cálculo correcto de anchos con padding */
+    box-sizing: border-box;
+    /* Garantiza el cálculo correcto de anchos con padding */
 }
 
 body {
@@ -32,7 +42,8 @@ body {
     color: var(--text-main);
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Fuerza al contenedor a ocupar el alto total de la ventana */
+    min-height: 100vh;
+    /* Fuerza al contenedor a ocupar el alto total de la ventana */
 }
 
 /* ==========================================================================
@@ -40,7 +51,8 @@ body {
    ========================================================================== */
 .layout-wrapper {
     display: flex;
-    flex: 1; /* Ocupa de forma dinámica todo el espacio vertical disponible */
+    flex: 1;
+    /* Ocupa de forma dinámica todo el espacio vertical disponible */
 }
 
 /* ==========================================================================
@@ -49,25 +61,84 @@ body {
 .app-header {
     background-color: var(--brand-primary);
     color: var(--text-light);
-    padding: 15px 30px;
+    padding: 12px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    min-height: var(--header-height);
 }
 
 .app-header h1 {
     font-size: 1.5rem;
 }
 
+/* ===== ETAPA 4 | Sandy Ortiz | Responsive Core ===== */
+.brand-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.hamburger-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    flex-direction: column;
+    gap: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    flex-shrink: 0;
+}
+
+.hamburger-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.hamburger-line {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background-color: var(--text-light);
+    border-radius: 1px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.hamburger-btn.is-active .hamburger-line:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+}
+
+.hamburger-btn.is-active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-btn.is-active .hamburger-line:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+}
+
+/* ===== FIN ETAPA 4 | Sandy Ortiz ===== */
+
 /* ==========================================================================
    Componente: Navegación Lateral (Sidebar Navigation)
    ========================================================================== */
 .sidebar-nav {
-    background-color: #1a2952; /* Variante tonal para diferenciar el menú lateral */
+    background-color: #1a2952;
+    /* Variante tonal para diferenciar el menú lateral */
     width: 250px;
     padding: 20px 0;
+    position: sticky;
+    top: var(--header-height);
+    align-self: flex-start;
+    height: calc(100vh - var(--header-height));
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 .sidebar-nav ul {
@@ -79,14 +150,15 @@ body {
     color: #cbd5e1;
     text-decoration: none;
     padding: 15px 25px;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease, padding-left 0.2s ease;
 }
 
-.sidebar-nav ul li a:hover, 
+.sidebar-nav ul li a:hover,
 .sidebar-nav ul li a.active {
     background-color: var(--brand-accent);
     color: var(--text-light);
     font-weight: 600;
+    padding-left: 30px;
 }
 
 /* ==========================================================================
@@ -121,10 +193,12 @@ body {
     background-color: var(--text-light);
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     flex: 1;
     text-align: center;
     border-top: 4px solid var(--brand-primary);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: default;
 }
 
 .metric-card h3 {
@@ -150,7 +224,7 @@ body {
     background-color: var(--text-light);
     padding: 25px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     max-width: 500px;
 }
 
@@ -165,7 +239,7 @@ body {
 }
 
 /* Cambio en v2: Se integró el selector 'textarea' y se forzó la herencia de la fuente base */
-.form-group input, 
+.form-group input,
 .form-group select,
 .form-group textarea {
     width: 100%;
@@ -173,7 +247,17 @@ body {
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1rem;
-    font-family: inherit; /* Agregado en v2: Uniformidad tipográfica en campos de texto */
+    font-family: inherit;
+    /* Agregado en v2: Uniformidad tipográfica en campos de texto */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--brand-accent);
+    box-shadow: 0 0 0 3px rgba(246, 129, 33, 0.15);
 }
 
 /* Cambio en v2: Nueva regla específica para textareas (solo redimensionables verticalmente) */
@@ -191,11 +275,17 @@ body {
     cursor: pointer;
     font-weight: bold;
     width: 100%;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-primary:hover {
     background-color: #d16b18;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(246, 129, 33, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
 }
 
 /* ==========================================================================
@@ -206,6 +296,17 @@ body {
     background-color: var(--text-light);
     padding: 30px 20px;
     border-left: 1px solid var(--border-color);
+    position: sticky;
+    top: var(--header-height);
+    align-self: flex-start;
+    height: calc(100vh - var(--header-height));
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.system-status-panel::-webkit-scrollbar {
+    display: none;
 }
 
 .system-status-panel h3 {
@@ -234,7 +335,8 @@ body {
     background-color: var(--brand-primary);
     color: var(--text-light);
     padding: 30px 20px 15px 20px;
-    margin-top: auto; /* Empuja el footer si el contenido central es corto */
+    margin-top: auto;
+    /* Empuja el footer si el contenido central es corto */
 }
 
 .footer-content {
@@ -310,14 +412,18 @@ body {
 /* ==========================================================================
    Estrategia de Adaptabilidad Visual (Responsive Fluid Layout)
    ========================================================================== */
-@media (max-width: 900px) {
+@media (min-width: 769px) and (max-width: 900px) {
     .layout-wrapper {
         flex-direction: column;
     }
-    
-    .sidebar-nav, 
+
+    .sidebar-nav,
     .system-status-panel {
         width: 100%;
+        position: static;
+        height: auto;
+        max-height: none;
+        overflow-y: visible;
     }
 
     .sidebar-nav ul {
@@ -330,7 +436,799 @@ body {
         text-align: center;
     }
 
+    .sidebar-nav ul li a {
+        padding: 12px 15px;
+        font-size: 0.85rem;
+    }
+
+    .system-status-panel {
+        border-left: none;
+        border-top: 1px solid var(--border-color);
+        margin-top: 20px;
+    }
+
     .grid-cards {
         flex-direction: column;
     }
 }
+
+
+.app-header {
+    position: static;
+    min-height: auto;
+}
+
+.app-header h1 {
+    font-size: 1.2rem;
+    max-width: 400px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#app-container {
+    padding-top: 0;
+    overflow: visible;
+}
+
+/* ==========================================================================
+   ETAPA 4 - Estilos para Autenticacion, Layout Profesional y Gestion
+   Participacion de Yocairis Perez (100054667)
+   - Login fullscreen (Alternativa B)
+   - Header fijo + sidebar sticky + panel sticky
+   - Badge de usuario autenticado con icono, nombre y rol
+   - Scrollbars ocultos en paneles laterales
+   - Diseño responsive manteniendo funcionalidad
+   ========================================================================== */
+
+/* --- Pantalla de Login (Alternativa B: fullscreen) --- */
+#login-section {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, var(--brand-primary) 0%, #1a2952 100%);
+}
+
+.login-brand-top {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--text-light);
+}
+
+.login-brand-top h1 {
+    font-size: 1.3rem;
+    margin-bottom: 6px;
+}
+
+.user-state-label {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.login-container {
+    background-color: var(--text-light);
+    padding: 35px;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 100%;
+    border-top: 4px solid var(--brand-accent);
+}
+
+.login-container h2 {
+    color: var(--brand-primary);
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.login-container p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+/* --- Contenedor principal del sistema (oculto hasta login) --- */
+#app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-top: var(--header-height);
+    overflow: clip;
+}
+
+/* --- Badge de Usuario Autenticado (Header) --- */
+.user-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-icon {
+    width: 32px;
+    height: 32px;
+    background-color: rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    flex-shrink: 0;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.user-role {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* --- Boton de Cerrar Sesion en Header --- */
+.logout-btn {
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.78rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-family: inherit;
+    flex-shrink: 0;
+}
+
+.logout-btn:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    color: var(--text-light);
+}
+
+/* --- Barra de Filtros --- */
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    background-color: var(--text-light);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.filter-bar select,
+.filter-bar input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-family: inherit;
+}
+
+.filter-bar select {
+    min-width: 180px;
+}
+
+.filter-bar input {
+    min-width: 200px;
+    flex: 1;
+}
+
+.btn-secondary {
+    background-color: var(--brand-primary);
+    color: var(--text-light);
+    border: none;
+    padding: 8px 18px;
+    font-size: 0.95rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    font-family: inherit;
+}
+
+.btn-secondary:hover {
+    background-color: #1a2952;
+    transform: translateY(-1px);
+}
+
+/* --- Tabla de Incidencias --- */
+.bugs-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--text-light);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.bugs-table th {
+    background-color: var(--brand-primary);
+    color: var(--text-light);
+    padding: 12px 10px;
+    text-align: left;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.bugs-table td {
+    padding: 10px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.9rem;
+    vertical-align: middle;
+}
+
+.bugs-table tr:hover {
+    background-color: #f8f9fb;
+}
+
+.td-desc {
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.td-actions {
+    white-space: nowrap;
+}
+
+/* --- Badges de Severidad --- */
+.badge {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge-red {
+    background-color: #fde8e8;
+    color: var(--color-danger);
+}
+
+.badge-yellow {
+    background-color: #fef3cd;
+    color: #856404;
+}
+
+.badge-green {
+    background-color: #e8f8f5;
+    color: #1a7a4a;
+}
+
+/* --- Botones de Accion en Tabla --- */
+.btn-edit,
+.btn-delete {
+    border: none;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: inherit;
+    transition: opacity 0.2s ease;
+}
+
+.btn-edit {
+    background-color: #e8f0fe;
+    color: #1a73e8;
+    margin-right: 5px;
+}
+
+.btn-edit:hover {
+    opacity: 0.8;
+}
+
+.btn-delete {
+    background-color: #fde8e8;
+    color: var(--color-danger);
+}
+
+.btn-delete:hover {
+    opacity: 0.8;
+}
+
+/* ===== ETAPA 4 | Yocairis Perez | Dashboard Responsive ===== */
+
+/* ===== FIN ETAPA 4 | Yocairis Perez ===== */
+
+/* ===== ETAPA 4 | Alex Santana | Formularios ===== */
+
+/* ===== ETAPA 4 | Alex Santana | UX ===== */
+
+/* ===== FIN ETAPA 4 | Alex Santana ===== */
+
+/* ===== ETAPA 4 | Yocairis Perez | Tabla Responsive ===== */
+
+/* ===== FIN ETAPA 4 | Yocairis Perez ===== */
+
+/* ===== ETAPA 4 | Yocairis Perez | Acciones de Tabla ===== */
+
+/* ===== FIN ETAPA 4 | Yocairis Perez ===== */
+
+/* ===== ETAPA 4 | Sandy Ortiz | Responsive Core ===== */
+@media (max-width: 480px) {
+    .hamburger-btn {
+        display: flex;
+    }
+
+    .app-header h1 {
+        font-size: 0.85rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 110px;
+    }
+
+    .app-header {
+        padding: 8px 10px;
+        min-height: 48px;
+        gap: 4px;
+    }
+
+    .brand-container {
+        gap: 6px;
+        min-width: 0;
+        flex: 1;
+    }
+
+    .user-profile {
+        flex-shrink: 0;
+    }
+
+    .user-name {
+        font-size: 0.72rem;
+    }
+
+    .user-role {
+        font-size: 0.55rem;
+    }
+
+    .user-icon {
+        width: 26px;
+        height: 26px;
+        font-size: 0.8rem;
+    }
+
+    .logout-btn {
+        padding: 4px 6px;
+        font-size: 0.65rem;
+        white-space: nowrap;
+    }
+
+    .user-badge {
+        gap: 4px;
+    }
+
+    .sidebar-nav {
+        position: fixed;
+        top: var(--header-height);
+        left: -100%;
+        width: 260px;
+        height: calc(100vh - var(--header-height));
+        z-index: 1001;
+        transition: left 0.3s ease;
+        box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 1000;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+    }
+
+    .sidebar-nav.sidebar-open {
+        left: 0;
+    }
+
+    .sidebar-nav ul {
+        display: block;
+    }
+
+    .sidebar-nav ul li {
+        flex: none;
+        text-align: left;
+    }
+
+    .sidebar-nav ul li a {
+        padding: 14px 20px;
+    }
+
+    .system-status-panel {
+        width: 100%;
+        position: static;
+        height: auto;
+        max-height: none;
+        overflow-y: visible;
+        border-left: none;
+        border-top: 1px solid var(--border-color);
+        margin-top: 20px;
+    }
+
+    .layout-wrapper {
+        flex-direction: column;
+    }
+
+    .grid-cards {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    #app-container {
+        padding-top: 0;
+        overflow: visible;
+    }
+
+    .app-header {
+        position: static;
+        min-height: auto;
+    }
+
+    .login-container {
+        padding: 25px 18px;
+        margin: 0 12px;
+        max-width: 340px;
+    }
+
+    .login-container h2 {
+        font-size: 1.1rem;
+    }
+
+    .login-container p {
+        font-size: 0.82rem;
+    }
+
+    .login-brand-top h1 {
+        font-size: 0.95rem;
+        padding: 0 12px;
+    }
+
+    .app-footer {
+        padding: 20px 12px 10px 12px;
+    }
+
+    .team-members {
+        gap: 8px;
+    }
+
+    .team-members li {
+        padding: 5px 10px;
+        font-size: 0.78rem;
+    }
+
+    .footer-group-info h4 {
+        font-size: 0.9rem;
+    }
+
+    .main-content {
+        padding: 15px 12px;
+    }
+
+    .section-divider {
+        margin: 20px 0;
+    }
+
+    .filter-bar {
+        padding: 10px;
+    }
+
+    .bugs-table td {
+        font-size: 0.82rem;
+        padding: 6px;
+    }
+
+    .system-status-panel {
+        padding: 20px 15px;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .sidebar-nav ul {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .sidebar-nav ul li {
+        flex: 1;
+        text-align: center;
+    }
+
+    .sidebar-nav ul li a {
+        padding: 12px 15px;
+        font-size: 0.85rem;
+    }
+
+    .layout-wrapper {
+        flex-direction: column;
+    }
+
+    .sidebar-nav,
+    .system-status-panel {
+        width: 100%;
+        position: static;
+        height: auto;
+        max-height: none;
+        overflow-y: visible;
+    }
+
+    .system-status-panel {
+        border-left: none;
+        border-top: 1px solid var(--border-color);
+        margin-top: 20px;
+    }
+
+    .grid-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .app-header {
+        position: static;
+        min-height: auto;
+    }
+
+    .app-header h1 {
+        font-size: 1.15rem;
+        max-width: 340px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    #app-container {
+        padding-top: 0;
+        overflow: visible;
+    }
+}
+
+/* ==========================================================================
+   ETAPA 4 | Sandy Ortiz | UX y Animaciones
+   ========================================================================== */
+
+/* --- Mejora 8: Microinteracciones --- */
+.bugs-table tr {
+    transition: background-color 0.15s ease;
+}
+
+.logout-btn {
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.logout-btn:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* --- Mejora 7: Tooltips --- */
+[data-tooltip] {
+    position: relative;
+}
+
+[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background-color: #1a1a2e;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.4;
+    max-width: 280px;
+    white-space: normal;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+[data-tooltip]:hover::after,
+[data-tooltip]:focus::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* --- Mejora 1: Login Animation --- */
+@keyframes loginFadeOut {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+}
+
+#login-section.login-fade-out {
+    animation: loginFadeOut 0.35s ease forwards;
+}
+
+@keyframes dashboardFadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+#app-container.dashboard-entered {
+    animation: dashboardFadeIn 0.4s ease;
+}
+
+/* --- Mejora 6: Logout Animation --- */
+@keyframes dashboardFadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+}
+
+#app-container.dashboard-fade-out {
+    animation: dashboardFadeOut 0.3s ease forwards;
+}
+
+@keyframes loginFadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+#login-section.login-fade-in {
+    animation: loginFadeIn 0.35s ease forwards;
+}
+
+/* --- Mejora 2: Dashboard Entry (Staggered) --- */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dashboard-entered .kpi-dashboard {
+    animation: fadeInUp 0.45s ease both;
+}
+
+.dashboard-entered .form-section {
+    animation: fadeInUp 0.45s ease 0.12s both;
+}
+
+.dashboard-entered #filter-section {
+    animation: fadeInUp 0.45s ease 0.22s both;
+}
+
+.dashboard-entered #bugs-section {
+    animation: fadeInUp 0.45s ease 0.32s both;
+}
+
+.dashboard-entered .system-status-panel {
+    animation: fadeInUp 0.45s ease 0.18s both;
+}
+
+/* --- Mejora 3: Edit Scroll Highlight --- */
+@keyframes editingPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(246, 129, 33, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 0 4px rgba(246, 129, 33, 0.15);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(246, 129, 33, 0.4);
+    }
+}
+
+.standard-form.editing-mode {
+    animation: editingPulse 0.6s ease 3;
+}
+
+/* --- Mejora 4: Register Animation --- */
+@keyframes slideInAlert {
+    0% {
+        opacity: 0;
+        transform: translateY(-16px);
+        max-height: 0;
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 80px;
+    }
+}
+
+#form-alert.status-alert {
+    animation: slideInAlert 0.3s ease forwards;
+    overflow: hidden;
+}
+
+#form-alert.alert-hiding {
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* --- Mejora 5: Delete Animation --- */
+@keyframes fadeOutLeft {
+    0% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+}
+
+.bugs-table tr.deleting-row {
+    animation: fadeOutLeft 0.4s ease forwards;
+    overflow: hidden;
+}
+
+/* ===== FIN ETAPA 4 | Sandy Ortiz ===== */
+
+/* ===== ETAPA 4 | Sandy Ortiz | Bootstrap Integration ===== */
+/* Durante la Etapa 4 se evaluo la migracion completa a Bootstrap.
+   Se descarto por el alto riesgo de regresion sobre ~900 lineas de
+   CSS custom desarrolladas durante la propia etapa (layout sticky,
+   menu hamburguesa, tabla a tarjetas, animaciones, tooltips,
+   3 breakpoints responsive, formularios touch-friendly).
+
+   Se opto por una integracion parcial profesional:
+   1. Bootstrap Icons (CDN) - icono vectorial de usuario
+   2. Bootstrap Modal (CDN + JS) - confirmacion de eliminacion
+
+   El CDN de Bootstrap CSS se carga antes que style.css,
+   permitiendo que el CSS custom sobreescriba selectores
+   de Bootstrap donde existan conflictos. */
+/* ===== FIN ETAPA 4 | Sandy Ortiz ===== */
