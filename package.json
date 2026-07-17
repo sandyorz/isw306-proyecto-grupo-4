@@ -21,6 +21,7 @@
   "homepage": "https://github.com/sandyorz/isw306-proyecto-grupo-4#readme",
   "dependencies": {
     "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "sqlite3": "^6.0.1"

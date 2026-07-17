@@ -106,7 +106,22 @@ Para clonar, configurar y ejecutar la aplicacion completa en tu entorno local, e
    ```bash
    npm install
    ```
-2. **Inicialización del Servidor (Express sirve frontend + backend):**
+
+2. **Configurar variables de entorno (opcional):**
+   Copiar el archivo de ejemplo y ajustar valores:
+   ```bash
+   cp .env.example .env
+   ```
+   Variables disponibles:
+
+   | Variable | Descripcion | Valor por defecto |
+   | :--- | :--- | :--- |
+   | `PORT` | Puerto del servidor | `3000` |
+   | `SESSION_SECRET` | Secreto para las sesiones | `grupo4_sw_2026` |
+
+   **Nota:** Si no se crea el archivo `.env`, la aplicacion funciona con los valores por defecto.
+
+3. **Inicialización del Servidor (Express sirve frontend + backend):**
     ```bash
     npm start
     ```
@@ -115,7 +130,7 @@ Para clonar, configurar y ejecutar la aplicacion completa en tu entorno local, e
     node server.js
     ```
 
-3. **Abrir en el navegador:**
+4. **Abrir en el navegador:**
     ```
     http://localhost:3000
     ```

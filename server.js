@@ -21,8 +21,10 @@ const cors = require('cors');
 const session = require('express-session');
 const path = require('path');
 
+require('dotenv').config();
+
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
@@ -44,7 +46,7 @@ app.use(express.static(__dirname));
 
 // ===== ETAPA 4 | Albert Pena | Sesiones =====
 app.use(session({
-    secret: 'grupo4_sw_2026',
+    secret: process.env.SESSION_SECRET || 'grupo4_sw_2026',
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }
