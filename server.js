@@ -192,6 +192,22 @@ app.get('/api/kpis', (req, res) => {
 
 // ===== FIN ETAPA 4 | Alexander Tejeda =====
 
+// ===== ETAPA 4 | Sandy Ortiz | Health Check =====
+app.get('/api/health', (req, res) => {
+    const pkg = require('./package.json');
+    db.get('SELECT 1 AS alive', [], (err) => {
+        const status = err ? 'error' : 'ok';
+        const database = err ? 'desconectada' : 'conectada';
+        res.json({
+            status,
+            database,
+            version: pkg.version,
+            timestamp: new Date().toISOString()
+        });
+    });
+});
+// ===== FIN ETAPA 4 | Sandy Ortiz =====
+
 app.listen(PORT, () => {
     console.log(`Servidor en http://localhost:${PORT}`);
 });
