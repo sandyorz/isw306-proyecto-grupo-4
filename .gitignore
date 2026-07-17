@@ -1,3 +1,6 @@
 node_modules/
 ETAPA4_NOTAS_EQUIPO.txt
 ETAPA4_DOC_INTERNA.txt
+GUION_VIDEO_ETAPA4.txt
+*.db
+.env
