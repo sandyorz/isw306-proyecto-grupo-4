@@ -176,6 +176,240 @@ No se requiere configuracion adicional. La API_BASE se resuelve automaticamente.
 
 ---
 
+## 📋 API Reference
+
+### Base URL
+
+```
+http://localhost:3000/api
+```
+
+### Autenticacion
+
+#### `POST /api/login`
+Inicia sesion y crea una sesion en el servidor.
+
+**Request Body:**
+```json
+{
+  "username": "admin",
+  "password": "grupo4"
+}
+```
+
+**Success Response (200):**
+```json
+{
+  "message": "Login exitoso",
+  "user": { "username": "admin", "role": "admin" }
+}
+```
+
+**Error Response (401):**
+```json
+{
+  "error": "Credenciales invalidas"
+}
+```
+
+#### `POST /api/logout`
+Destruye la sesion activa.
+
+**Success Response (200):**
+```json
+{
+  "message": "Sesion cerrada"
+}
+```
+
+#### `GET /api/session`
+Verifica si hay una sesion activa.
+
+**Success Response (200) - Autenticado:**
+```json
+{
+  "authenticated": true,
+  "user": { "username": "admin", "role": "admin" }
+}
+```
+
+**Success Response (200) - No autenticado:**
+```json
+{
+  "authenticated": false
+}
+```
+
+---
+
+### Bugs (Incidencias)
+
+#### `GET /api/bugs`
+Lista todas las incidencias.
+
+**Query Parameters (opcionales):**
+| Parametro | Tipo | Descripcion |
+| :--- | :--- | :--- |
+| `severity` | string | Filtrar por severidad (`low`, `medium`, `high`) |
+| `module` | string | Filtrar por nombre de modulo (busqueda parcial) |
+| `limit` | number | Limitar cantidad de resultados |
+
+**Success Response (200):**
+```json
+[
+  {
+    "id": 1,
+    "email": "test@grupo4.com",
+    "severity": "high",
+    "module": "Autenticacion",
+    "description": "Error al iniciar sesion",
+    "created_at": "2026-07-17 10:00:00"
+  }
+]
+```
+
+#### `GET /api/bugs/:id`
+Obtiene una incidencia por su ID.
+
+**Success Response (200):**
+```json
+{
+  "id": 1,
+  "email": "test@grupo4.com",
+  "severity": "high",
+  "module": "Autenticacion",
+  "description": "Error al iniciar sesion",
+  "created_at": "2026-07-17 10:00:00"
+}
+```
+
+**Error Response (404):**
+```json
+{
+  "error": "No encontrado"
+}
+```
+
+#### `POST /api/bugs`
+Crea una nueva incidencia.
+
+**Request Body:**
+```json
+{
+  "email": "test@grupo4.com",
+  "severity": "high",
+  "module": "Autenticacion",
+  "description": "Error al iniciar sesion"
+}
+```
+
+**Success Response (200):**
+```json
+{
+  "message": "Bug registrado",
+  "bugId": 1
+}
+```
+
+#### `PUT /api/bugs/:id`
+Actualiza una incidencia existente. Requiere autenticacion.
+
+**Request Body:**
+```json
+{
+  "email": "test@grupo4.com",
+  "severity": "medium",
+  "module": "Base de Datos",
+  "description": "Error actualizado"
+}
+```
+
+**Success Response (200):**
+```json
+{
+  "message": "Bug actualizado"
+}
+```
+
+**Error Response (404):**
+```json
+{
+  "error": "No encontrado"
+}
+```
+
+#### `DELETE /api/bugs/:id`
+Elimina una incidencia. Requiere autenticacion.
+
+**Success Response (200):**
+```json
+{
+  "message": "Bug eliminado"
+}
+```
+
+**Error Response (404):**
+```json
+{
+  "error": "No encontrado"
+}
+```
+
+---
+
+### KPIs
+
+#### `GET /api/kpis`
+Obtiene metricas en tiempo real del sistema.
+
+**Success Response (200):**
+```json
+{
+  "total": 10,
+  "high": 3,
+  "today": 2,
+  "modules": 5
+}
+```
+
+| Campo | Descripcion |
+| :--- | :--- |
+| `total` | Total de incidencias registradas |
+| `high` | Incidencias con severidad alta |
+| `today` | Incidencias creadas hoy |
+| `modules` | Modulos distintos afectados |
+
+---
+
+### Health Check
+
+#### `GET /api/health`
+Verifica el estado del servidor y la conexion a la base de datos.
+
+**Success Response (200):**
+```json
+{
+  "status": "ok",
+  "database": "conectada",
+  "version": "1.0.0",
+  "timestamp": "2026-07-17T12:00:00.000Z"
+}
+```
+
+---
+
+### Codigos de Estado
+
+| Codigo | Significado |
+| :--- | :--- |
+| 200 | Operacion exitosa |
+| 400 | Error en la solicitud (datos invalidos) |
+| 401 | No autorizado (requiere sesion) |
+| 404 | Recurso no encontrado |
+| 500 | Error interno del servidor |
+
+---
+
 ## 🅱️ Framework CSS Utilizado
 
 Durante la Etapa 4 se realizó una evaluacion tecnica de Bootstrap como framework CSS para la interfaz.
