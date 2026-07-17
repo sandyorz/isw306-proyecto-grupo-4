@@ -210,6 +210,20 @@ app.get('/api/health', (req, res) => {
 });
 // ===== FIN ETAPA 4 | Sandy Ortiz =====
 
+// ===== ETAPA 4 | Sandy Ortiz | Error Middleware =====
+app.use((req, res, next) => {
+    if (req.path.startsWith('/api/')) {
+        return res.status(404).json({ error: 'Endpoint no encontrado' });
+    }
+    next();
+});
+
+app.use((err, req, res, next) => {
+    console.error('Error:', err.message);
+    res.status(500).json({ error: 'Error interno del servidor' });
+});
+// ===== FIN ETAPA 4 | Sandy Ortiz =====
+
 app.listen(PORT, () => {
     console.log(`Servidor en http://localhost:${PORT}`);
 });
