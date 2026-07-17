@@ -139,10 +139,26 @@ app.get('/api/bugs/:id', (req, res) => {
 });
 // ===== FIN ETAPA 4 | Sandy Ortiz =====
 
+// ===== ETAPA 4 | Sandy Ortiz | Validaciones =====
+const VALID_SEVERITIES = ['low', 'medium', 'high'];
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function validateBugInput({ email, severity, module, description }) {
+    const errors = [];
+    if (!email || !EMAIL_REGEX.test(email)) errors.push('Email invalido');
+    if (!severity || !VALID_SEVERITIES.includes(severity)) errors.push('Severidad invalida (debe ser low, medium o high)');
+    if (!module || module.trim().length === 0) errors.push('Modulo es requerido');
+    if (!description || description.trim().length === 0) errors.push('Descripcion es requerida');
+    return errors;
+}
+// ===== FIN ETAPA 4 | Sandy Ortiz =====
+
 app.post('/api/bugs', (req, res) => {
     const { email, severity, module, description } = req.body;
+    const errors = validateBugInput({ email, severity, module, description });
+    if (errors.length > 0) return res.status(400).json({ error: 'Datos invalidos', details: errors });
     const sql = 'INSERT INTO bugs (email, severity, module, description) VALUES (?, ?, ?, ?)';
-    db.run(sql, [email, severity, module, description], function (err) {
+    db.run(sql, [email.trim(), severity, module.trim(), description.trim()], function (err) {
         if (err) return res.status(400).json({ error: err.message });
         res.json({ message: 'Bug registrado', bugId: this.lastID });
     });
@@ -151,8 +167,10 @@ app.post('/api/bugs', (req, res) => {
 // ===== ETAPA 4 | Sandy Ortiz | PUT =====
 app.put('/api/bugs/:id', requireAuth, (req, res) => {
     const { email, severity, module, description } = req.body;
+    const errors = validateBugInput({ email, severity, module, description });
+    if (errors.length > 0) return res.status(400).json({ error: 'Datos invalidos', details: errors });
     const sql = 'UPDATE bugs SET email = ?, severity = ?, module = ?, description = ? WHERE id = ?';
-    db.run(sql, [email, severity, module, description, req.params.id], function (err) {
+    db.run(sql, [email.trim(), severity, module.trim(), description.trim(), req.params.id], function (err) {
         if (err) return res.status(400).json({ error: err.message });
         if (this.changes === 0) return res.status(404).json({ error: 'No encontrado' });
         res.json({ message: 'Bug actualizado' });
